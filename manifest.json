@@ -10,7 +10,8 @@
   "content_scripts": [
     {
       "matches": [
-        "https://github.com/*.kt"
+        "https://github.com/*.kt",
+        "https://github.com/*.java"
       ],
       "js": [
         "out/production/source-pilot/lib/kotlin.js",
