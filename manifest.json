@@ -1,0 +1,23 @@
+{
+  "name": "Source Pilot",
+  "version": "1.0.0",
+  "description": "IDE like file navigation, for GitHub",
+  "manifest_version": 2,
+  "permissions": [
+    "activeTab",
+    "tabs"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://github.com/*.kt"
+      ],
+      "js": [
+        "libs/jquery.min.js",
+        "out/production/source-pilot/lib/kotlin.js",
+        "out/production/source-pilot/source-pilot.js"
+      ],
+      "runat": "document_start"
+    }
+  ]
+}
