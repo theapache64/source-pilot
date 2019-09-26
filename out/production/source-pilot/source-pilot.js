@@ -3,8 +3,9 @@ if (typeof kotlin === 'undefined') {
 }
 this['source-pilot'] = function (_, Kotlin) {
   'use strict';
+  var println = Kotlin.kotlin.io.println_s8jyv4$;
   function main() {
-    console.log('ok!!!!!!!!');
+    println('Hello World');
   }
   _.main = main;
   main();

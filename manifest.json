@@ -13,7 +13,6 @@
         "https://github.com/*.kt"
       ],
       "js": [
-        "libs/jquery.min.js",
         "out/production/source-pilot/lib/kotlin.js",
         "out/production/source-pilot/source-pilot.js"
       ],
