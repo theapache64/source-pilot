@@ -1,8 +1,12 @@
 import extensions.startsWithUppercaseLetter
+import languages.AndroidXMLSupport
+import languages.JavaSupport
+import languages.KotlinSupport
 import org.w3c.dom.HTMLSpanElement
 import org.w3c.dom.asList
 import org.w3c.xhr.XMLHttpRequest
 import utils.Parser
+import utils.SupportManager
 import kotlin.browser.document
 import kotlin.browser.window
 
@@ -10,10 +14,63 @@ import kotlin.browser.window
 lateinit var fullCode: String
 lateinit var imports: List<String>
 lateinit var currentFilePath: String
+
 var isControlActive = false;
 var activeElement: HTMLSpanElement? = null
 var resLink: String? = null
+val supportManager = SupportManager()
+val support = supportManager.getSupportForCurrentFile()
 
+fun main() {
+
+    println("✈ source-pilot activated")
+
+    fullCode = document.querySelector("table.highlight tbody")?.textContent ?: ""
+    imports = Parser.parseImports(fullCode)
+    println("Imports are $imports")
+    currentFilePath = getCurrentFilePath()
+
+    // Element Mouse Over
+    val allSpan = document.querySelectorAll("table.highlight tbody tr td.blob-code span")
+    allSpan.asList().forEach { _node ->
+        val node = _node as HTMLSpanElement
+
+        // Mouse over span
+        node.onmouseover = {
+            activeElement = node
+            println("Mouse over...")
+            underlineActiveElement()
+        }
+
+        // Mouse leave span
+        node.onmouseleave = {
+            println("Mouse left from ${node.innerText}, Removing underline...")
+            removeUnderlineFromActiveElement()
+        }
+
+        // Mouse click
+        node.onclick = {
+            if (isControlActive && resLink != null) {
+                window.open(resLink!!, "_blank")
+            }
+        }
+    }
+
+    document.onkeydown = {
+        if (it.which == 17) {
+            isControlActive = true
+            underlineActiveElement()
+        }
+    }
+
+    document.onkeyup = {
+        if (it.which == 17) {
+            isControlActive = false
+            removeUnderlineFromActiveElement()
+        }
+    }
+
+}
 
 fun checkIsClickable(inputText: String) {
 
@@ -102,56 +159,6 @@ fun underlineActiveElement() {
     }
 }
 
-
-fun main() {
-
-    println("Source Pilot Activated (y)")
-    fullCode = document.querySelector("table.highlight tbody")?.textContent ?: ""
-    imports = Parser.parseImports(fullCode)
-    println("Imports are $imports")
-    currentFilePath = getCurrentFilePath()
-
-    // Element Mouse Over
-    val allSpan = document.querySelectorAll("table.highlight tbody tr td.blob-code span")
-    allSpan.asList().forEach { _node ->
-        val node = _node as HTMLSpanElement
-
-        // Mouse over span
-        node.onmouseover = {
-            activeElement = node
-            println("Mouse over...")
-            underlineActiveElement()
-        }
-
-        // Mouse leave span
-        node.onmouseleave = {
-            println("Mouse left from ${node.innerText}, Removing underline...")
-            removeUnderlineFromActiveElement()
-        }
-
-        // Mouse click
-        node.onclick = {
-            if (isControlActive && resLink != null) {
-                window.open(resLink!!, "_blank")
-            }
-        }
-    }
-
-    document.onkeydown = {
-        if (it.which == 17) {
-            isControlActive = true
-            underlineActiveElement()
-        }
-    }
-
-    document.onkeyup = {
-        if (it.which == 17) {
-            isControlActive = false
-            removeUnderlineFromActiveElement()
-        }
-    }
-
-}
 
 fun getCurrentFilePath(): String {
     val currentUrl = window.location.toString()
