@@ -29,7 +29,7 @@ open class KotlinSupport : LanguageSupport() {
             } else {
                 // Checking if it's the import statement it self
                 println("Checking if it's import statement")
-                val isImportStatement = htmlSpanElement.parentElement?.textContent.equals("import $inputText")
+                val isImportStatement = htmlSpanElement.parentElement?.textContent.equals(getImportStatement(inputText))
                 if (isImportStatement) {
                     inputText
                 } else {
@@ -39,14 +39,18 @@ open class KotlinSupport : LanguageSupport() {
         }
     }
 
-    override fun getNewResourceUrl(inputText: String, htmlSpanElement: HTMLSpanElement): String? {
+    protected open fun getImportStatement(inputText: String): String {
+        return "import $inputText"
+    }
 
+
+    override fun getNewResourceUrl(inputText: String, htmlSpanElement: HTMLSpanElement, callback: (String?) -> Unit) {
         if (inputText.startsWith(".layout.")) {
             println("Generating new url for layout : $inputText")
             val layoutFileName = CommonParser.parseLayoutFileName(inputText)
             val currentUrl = window.location.toString()
             //https://github.com/theapache64/swipenetic/blob/master/app/src/main/java/com/theapache64/swipenetic/ui/activities/chart/ChartActivity.kt
-            return "${currentUrl.split("java")[0]}/res/layout/$layoutFileName.xml"
+            callback("${currentUrl.split("main")[0]}main/res/layout/$layoutFileName.xml")
         } else if (imports.isNotEmpty()) {
 
             val currentPackageName = KotlinParser.currentPackageName(getFullCode())
@@ -61,16 +65,15 @@ open class KotlinSupport : LanguageSupport() {
                 val windowLocSplit = currentUrl.split(packageSlash)
 
                 // Returning new url
-                return "${windowLocSplit[0]}/${matchingImport!!.replace('.', '/')}.$curFileExt#L1"
+                callback("${windowLocSplit[0]}/${matchingImport!!.replace('.', '/')}.$curFileExt#L1")
             } else {
                 println("No import matched! Matching importing was : $matchingImport")
+                callback(null)
             }
         } else {
             println("No imports found")
+            callback(null)
         }
-
-
-        return null
     }
 
     /**
@@ -79,6 +82,7 @@ open class KotlinSupport : LanguageSupport() {
     private fun isClickableImport(matchingImport: String?): Boolean {
         return matchingImport != null &&
                 !matchingImport.startsWith("android.") &&
+                !matchingImport.startsWith("java.") &&
                 !matchingImport.startsWith("androidx.")
     }
 

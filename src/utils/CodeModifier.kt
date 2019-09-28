@@ -13,9 +13,11 @@ object CodeModifier {
         matches.forEach { match ->
             val fullMatch = match.groups[0]!!.value
             val g1 = match.groups[1]!!.value
-            val g1m = "<span>$g1</span>"
-            val newMatch = fullMatch.replace(g1, g1m)
-            tbodyHtml = tbodyHtml.replace(fullMatch, newMatch)
+            if (g1.trim().isNotEmpty()) {
+                val g1m = "<span>$g1</span>"
+                val newMatch = fullMatch.replace(g1, g1m)
+                tbodyHtml = tbodyHtml.replace(fullMatch, newMatch)
+            }
         }
 
         return tbodyHtml

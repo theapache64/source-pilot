@@ -11,7 +11,8 @@
     {
       "matches": [
         "https://github.com/*.kt",
-        "https://github.com/*.java"
+        "https://github.com/*.java",
+        "https://github.com/*.xml"
       ],
       "js": [
         "out/production/source-pilot/lib/kotlin.js",

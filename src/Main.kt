@@ -1,5 +1,4 @@
-import org.w3c.dom.HTMLSpanElement
-import org.w3c.dom.asList
+import org.w3c.dom.*
 import org.w3c.xhr.XMLHttpRequest
 import utils.CodeModifier
 import utils.SupportManager
@@ -14,7 +13,10 @@ val supportManager = SupportManager()
 val support = supportManager.getSupportForCurrentFile()
 
 fun main() {
+    activateSourcePilot()
+}
 
+private fun activateSourcePilot() {
     println("✈ source-pilot activated")
 
     // Changing non span elements to span elements
@@ -23,7 +25,7 @@ fun main() {
     codeTable.innerHTML = newCode
 
     // Element Mouse Over ib
-    val allCodeSpan = document.querySelectorAll("table.highlight tbody tr td.blob-code span")
+    val allCodeSpan = document.querySelectorAll("table.highlight tbody tr td.blob-code > span")
     allCodeSpan.asList().forEach { _node ->
         val node = _node as HTMLSpanElement
 
@@ -51,6 +53,7 @@ fun main() {
     document.onkeydown = {
         if (it.which == 17) {
             isControlActive = true
+            println("Control pressed")
             checkIfClickable()
         }
     }
@@ -58,21 +61,26 @@ fun main() {
     document.onkeyup = {
         if (it.which == 17) {
             isControlActive = false
+            println("Control released")
             removeUnderlineFromActiveElement()
         }
     }
-
 }
 
 fun checkIsClickable(inputText: String) {
     println("Checking if $inputText is clickable...")
-    val newUrl = support.getNewResourceUrl(inputText, activeElement!!)
-    if (newUrl != null) {
-        println("New url is $newUrl")
-        resLink = newUrl
-        activeElement?.style?.textDecoration = "underline"
-        doubleCheckUrl(newUrl)
+    support.getNewResourceUrl(inputText, activeElement!!) { newUrl ->
+        if (newUrl != null) {
+            println("New url is $newUrl")
+            resLink = newUrl
+            activeElement?.style?.textDecoration = "underline"
+            doubleCheckUrl(newUrl)
+        } else {
+            println("New url is $newUrl, so it's not clickable :(")
+            resLink = null
+        }
     }
+
 }
 
 
