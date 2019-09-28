@@ -66,7 +66,7 @@ fun main() {
 
 fun checkIsClickable(inputText: String) {
     println("Checking if $inputText is clickable...")
-    val newUrl = support.getNewResourceUrl(inputText)
+    val newUrl = support.getNewResourceUrl(inputText, activeElement!!)
     if (newUrl != null) {
         println("New url is $newUrl")
         resLink = newUrl
@@ -77,16 +77,16 @@ fun checkIsClickable(inputText: String) {
 
 
 fun doubleCheckUrl(newUrl: String) {
-
     val xhr = XMLHttpRequest()
     xhr.open("GET", newUrl)
     xhr.onload = {
         if (xhr.status.toInt() != 200) {
-            // valid
+            // invalid
             println("Invalid URL : $newUrl")
             resLink = null
             activeElement?.style?.textDecoration = "none"
         } else {
+            // valid
             println("Valid URL it was :)")
         }
     }

@@ -2,6 +2,9 @@ package languages
 
 import base.LanguageSupport
 import extensions.startsWithUppercaseLetter
+import org.w3c.dom.Element
+import org.w3c.dom.HTMLElement
+import org.w3c.dom.HTMLSpanElement
 import utils.CommonParser
 import utils.KotlinParser
 import kotlin.browser.window
@@ -13,9 +16,10 @@ open class KotlinSupport : LanguageSupport() {
     /**
      * To get matching import for the input passed from the imports in the file.
      */
-    private fun getMatchingImport(inputText: String, currentPackageName: String): String? {
+    private fun getMatchingImport(inputText: String, currentPackageName: String, htmlSpanElement: HTMLSpanElement): String? {
 
         val matchingImports = imports.filter { it.endsWith(".${inputText}") }
+        println("Matching imports are : $matchingImports")
         return if (matchingImports.isNotEmpty()) {
             matchingImports.first()
         } else {
@@ -23,19 +27,33 @@ open class KotlinSupport : LanguageSupport() {
             if (inputText.startsWithUppercaseLetter()) {
                 "$currentPackageName.$inputText"
             } else {
-                null
+                // Checking if it's the import statement it self
+                println("Checking if it's import statement")
+                val isImportStatement = htmlSpanElement.parentElement?.textContent.equals("import $inputText")
+                if (isImportStatement) {
+                    inputText
+                } else {
+                    null
+                }
             }
         }
     }
 
-    override fun getNewResourceUrl(inputText: String): String? {
+    override fun getNewResourceUrl(inputText: String, htmlSpanElement: HTMLSpanElement): String? {
 
-
-        if (imports.isNotEmpty()) {
+        if (inputText.startsWith(".layout.")) {
+            println("Generating new url for layout : $inputText")
+            val layoutFileName = CommonParser.parseLayoutFileName(inputText)
+            val currentUrl = window.location.toString()
+            //https://github.com/theapache64/swipenetic/blob/master/app/src/main/java/com/theapache64/swipenetic/ui/activities/chart/ChartActivity.kt
+            return "${currentUrl.split("java")[0]}/res/layout/$layoutFileName.xml"
+        } else if (imports.isNotEmpty()) {
 
             val currentPackageName = KotlinParser.currentPackageName(getFullCode())
+
             // Getting possible import statements for the class
-            val matchingImport = getMatchingImport(inputText, currentPackageName)
+            val matchingImport = getMatchingImport(inputText, currentPackageName, htmlSpanElement)
+
             if (isClickableImport(matchingImport)) {
                 val currentUrl = window.location.toString()
                 val curFileExt = CommonParser.parseFileExt(currentUrl)
@@ -50,6 +68,7 @@ open class KotlinSupport : LanguageSupport() {
         } else {
             println("No imports found")
         }
+
 
         return null
     }

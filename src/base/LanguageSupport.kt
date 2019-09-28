@@ -1,5 +1,6 @@
 package base
 
+import org.w3c.dom.HTMLSpanElement
 import kotlin.browser.document
 
 abstract class LanguageSupport {
@@ -7,7 +8,7 @@ abstract class LanguageSupport {
     private val fullCode = document.querySelector("table.highlight tbody")?.textContent
 
     abstract fun getFileExtension(): String
-    abstract fun getNewResourceUrl(inputText: String): String?
+    abstract fun getNewResourceUrl(inputText: String, htmlSpanElement: HTMLSpanElement): String?
 
     fun getFullCode(): String {
         requireNotNull(fullCode) { "fullCode is null. couldn't get code from website" }
