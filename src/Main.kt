@@ -1,19 +1,11 @@
-import extensions.startsWithUppercaseLetter
-import languages.AndroidXMLSupport
-import languages.JavaSupport
-import languages.KotlinSupport
 import org.w3c.dom.HTMLSpanElement
 import org.w3c.dom.asList
 import org.w3c.xhr.XMLHttpRequest
-import utils.Parser
+import utils.CodeModifier
 import utils.SupportManager
 import kotlin.browser.document
 import kotlin.browser.window
 
-
-lateinit var fullCode: String
-lateinit var imports: List<String>
-lateinit var currentFilePath: String
 
 var isControlActive = false;
 var activeElement: HTMLSpanElement? = null
@@ -25,21 +17,21 @@ fun main() {
 
     println("✈ source-pilot activated")
 
-    fullCode = document.querySelector("table.highlight tbody")?.textContent ?: ""
-    imports = Parser.parseImports(fullCode)
-    println("Imports are $imports")
-    currentFilePath = getCurrentFilePath()
+    // Changing non span elements to span elements
+    val codeTable = document.querySelector("table.highlight")!!
+    val newCode = CodeModifier.getSpanWrapped(codeTable)
+    codeTable.innerHTML = newCode
 
-    // Element Mouse Over
-    val allSpan = document.querySelectorAll("table.highlight tbody tr td.blob-code span")
-    allSpan.asList().forEach { _node ->
+    // Element Mouse Over ib
+    val allCodeSpan = document.querySelectorAll("table.highlight tbody tr td.blob-code span")
+    allCodeSpan.asList().forEach { _node ->
         val node = _node as HTMLSpanElement
 
         // Mouse over span
         node.onmouseover = {
             activeElement = node
-            println("Mouse over...")
-            underlineActiveElement()
+            println("Mouse over... : ${node.innerText}")
+            checkIfClickable()
         }
 
         // Mouse leave span
@@ -59,7 +51,7 @@ fun main() {
     document.onkeydown = {
         if (it.which == 17) {
             isControlActive = true
-            underlineActiveElement()
+            checkIfClickable()
         }
     }
 
@@ -73,60 +65,16 @@ fun main() {
 }
 
 fun checkIsClickable(inputText: String) {
-
     println("Checking if $inputText is clickable...")
-
-    if (isLayoutFile(inputText)) {
-
-    } else {
-
-        if (imports.isNotEmpty()) {
-
-            val matchingImports = imports.filter { it.endsWith(".${inputText}") }
-            println("Matching imports are")
-            println(matchingImports)
-            val currentPackageName = Parser.currentPackageName(fullCode)
-            val matchingImport = if (matchingImports.isNotEmpty()) {
-                matchingImports.first()
-            } else {
-                println("No import matched for $inputText, setting current name : $currentPackageName")
-                if (inputText.startsWithUppercaseLetter()) {
-                    "$currentPackageName.$inputText"
-                } else {
-                    null
-                }
-            }
-
-            if (matchingImport != null &&
-                    !matchingImport.startsWith("android.") &&
-                    !matchingImport.startsWith("androidx.")
-            ) {
-                println("Matching import is $matchingImport")
-                println("Current package name $currentPackageName")
-                val currentUrl = window.location.toString()
-                println("currentUrl is $currentUrl")
-                val curFileExt = Parser.parseFileExt(currentUrl)
-                val packageSlash = '/' + currentPackageName.replace('.', '/');
-                val windowLocSplit = currentUrl.split(packageSlash)
-                val newUrl = windowLocSplit[0] + '/' + matchingImport.replace('.', '/') + '.' + curFileExt + "#L1"
-                println("New url is $newUrl")
-                resLink = newUrl
-                activeElement?.style?.textDecoration = "underline"
-                doubleCheckUrl(newUrl)
-            } else {
-                println("No import matched! Matching importing was : $matchingImport")
-            }
-
-        }
+    val newUrl = support.getNewResourceUrl(inputText)
+    if (newUrl != null) {
+        println("New url is $newUrl")
+        resLink = newUrl
+        activeElement?.style?.textDecoration = "underline"
+        doubleCheckUrl(newUrl)
     }
-
-
 }
 
-fun isLayoutFile(inputText: String): Boolean {
-    // TODO :
-    return false
-}
 
 fun doubleCheckUrl(newUrl: String) {
 
@@ -150,17 +98,11 @@ fun removeUnderlineFromActiveElement() {
     activeElement = null
 }
 
-fun underlineActiveElement() {
+fun checkIfClickable() {
     activeElement?.let { activeElement ->
-        val className = activeElement.innerText
+        val inputText = activeElement.innerText
         if (isControlActive) {
-            checkIsClickable(className)
+            checkIsClickable(inputText)
         }
     }
-}
-
-
-fun getCurrentFilePath(): String {
-    val currentUrl = window.location.toString()
-    return Parser.getCurrentFilePath(currentUrl)
 }

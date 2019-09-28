@@ -2,7 +2,8 @@ package languages
 
 import base.LanguageSupport
 
-class JavaSupport : LanguageSupport() {
+
+class JavaSupport : KotlinSupport() {
     override fun getFileExtension(): String {
         return "java"
     }
