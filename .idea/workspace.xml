@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ea750493-3fa5-4cb5-9b6e-2a7e7c47de9e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/base/LanguageSupport.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/base/LanguageSupport.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/SupportManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/SupportManager.kt" afterDir="false" />
-    </list>
+    <list default="true" id="ea750493-3fa5-4cb5-9b6e-2a7e7c47de9e" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
