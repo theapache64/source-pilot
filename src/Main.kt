@@ -1,3 +1,4 @@
+import base.LanguageSupport
 import org.w3c.dom.*
 import org.w3c.xhr.XMLHttpRequest
 import utils.CodeModifier
@@ -8,11 +9,28 @@ import kotlin.browser.window
 var isControlActive = false;
 var activeElement: HTMLSpanElement? = null
 var resLink: String? = null
-val supportManager = SupportManager()
-val support = supportManager.getSupportForCurrentFile()
+var support: LanguageSupport? = null
 
+var prevUrl = window.location.toString()
 fun main() {
     activateSourcePilot()
+
+    watchForUrlChange {
+        println("URL changed, reactivating source pilot")
+        window.setTimeout({
+            activateSourcePilot()
+        }, 2000)
+    }
+}
+
+private fun watchForUrlChange(callback: () -> Unit) {
+    window.setInterval({
+        val newUrl = window.location.toString()
+        if (newUrl != prevUrl) {
+            prevUrl = newUrl
+            callback()
+        }
+    }, 500)
 }
 
 
@@ -20,52 +38,62 @@ private fun activateSourcePilot() {
 
     println("✈ source-pilot activated")
 
+    val supportManager = SupportManager()
+    support = supportManager.getSupportForCurrentFile()
+
     // Changing non span elements to span elements
-    val codeTable = document.querySelector("table.highlight")!!
-    val newCode = CodeModifier.getSpanWrapped(codeTable)
-    codeTable.innerHTML = newCode
+    val codeTable = document.querySelector("table.highlight")
 
-    // Element Mouse Over ib
-    val allCodeSpan = document.querySelectorAll("table.highlight tbody tr td.blob-code > span")
-    allCodeSpan.asList().forEach { _node ->
-        val node = _node as HTMLSpanElement
+    if (codeTable != null) {
+        println("Found code table : ${codeTable.textContent}")
+        val newCode = CodeModifier.getSpanWrapped(codeTable)
+        codeTable.innerHTML = newCode
 
-        // Mouse over span
-        node.onmouseover = {
-            activeElement = node
-            checkIfClickable()
-        }
+        // Element Mouse Over ib
+        val allCodeSpan = document.querySelectorAll("table.highlight tbody tr td.blob-code > span")
+        allCodeSpan.asList().forEach { _node ->
+            val node = _node as HTMLSpanElement
 
-        // Mouse leave span
-        node.onmouseleave = {
-            removeUnderlineFromActiveElement()
-        }
+            // Mouse over span
+            node.onmouseover = {
+                activeElement = node
+                checkIfClickable()
+            }
 
-        // Mouse click
-        node.onclick = {
-            if (isControlActive && resLink != null) {
-                window.open(resLink!!, "_blank")
+            // Mouse leave span
+            node.onmouseleave = {
+                removeUnderlineFromActiveElement()
+            }
+
+            // Mouse click
+            node.onclick = {
+                if (isControlActive && resLink != null) {
+                    window.open(resLink!!, "_blank")
+                }
             }
         }
-    }
 
-    document.onkeydown = {
-        if (it.which == 17) {
-            isControlActive = true
-            checkIfClickable()
+        document.onkeydown = {
+            if (it.which == 17) {
+                isControlActive = true
+                checkIfClickable()
+            }
         }
-    }
 
-    document.onkeyup = {
-        if (it.which == 17) {
-            isControlActive = false
-            removeUnderlineFromActiveElement()
+        document.onkeyup = {
+            if (it.which == 17) {
+                isControlActive = false
+                removeUnderlineFromActiveElement()
+            }
         }
+    } else {
+        println("Code table not found @${window.location}. Seems like it's not a file")
     }
 }
 
 fun checkIsClickable(inputText: String) {
-    support.getNewResourceUrl(inputText, activeElement!!) { newUrl ->
+    println("Checking if $inputText is clickable ")
+    support?.getNewResourceUrl(inputText, activeElement!!) { newUrl ->
         if (newUrl != null) {
             resLink = newUrl
             activeElement?.style?.textDecoration = "underline"
@@ -75,7 +103,6 @@ fun checkIsClickable(inputText: String) {
             resLink = null
         }
     }
-
 }
 
 

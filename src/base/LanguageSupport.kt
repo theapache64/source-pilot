@@ -14,6 +14,4 @@ abstract class LanguageSupport {
         requireNotNull(fullCode) { "fullCode is null. couldn't get code from website" }
         return fullCode
     }
-
-
 }

@@ -3,11 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="ea750493-3fa5-4cb5-9b6e-2a7e7c47de9e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/languages/AndroidXMLSupport.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/languages/AndroidXMLSupport.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/languages/KotlinSupport.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/languages/KotlinSupport.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/CommonParser.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/CommonParser.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/KotlinParser.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/KotlinParser.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/base/LanguageSupport.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/base/LanguageSupport.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/SupportManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/SupportManager.kt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
