@@ -26,13 +26,13 @@ class SupportManager {
      * To get file support for current file
      */
     fun getSupportForCurrentFile(): LanguageSupport {
-        val fileExt = CommonParser.parseFileExt(window.location.toString())
+        val currentFileExt = CommonParser.parseFileExt(window.location.toString())
         for (support in SUPPORTS) {
-            if (support.getFileExtension() == fileExt) {
+            if (support.getFileExtension() == currentFileExt) {
                 return support
             }
         }
-        throw IllegalArgumentException("No support found for $fileExt")
+        throw IllegalArgumentException("No support found for $currentFileExt")
     }
 
 }

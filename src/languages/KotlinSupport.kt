@@ -2,8 +2,6 @@ package languages
 
 import base.LanguageSupport
 import extensions.startsWithUppercaseLetter
-import org.w3c.dom.Element
-import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLSpanElement
 import utils.CommonParser
 import utils.KotlinParser
@@ -51,9 +49,16 @@ open class KotlinSupport : LanguageSupport() {
             val currentUrl = window.location.toString()
             //https://github.com/theapache64/swipenetic/blob/master/app/src/main/java/com/theapache64/swipenetic/ui/activities/chart/ChartActivity.kt
             callback("${currentUrl.split("main")[0]}main/res/layout/$layoutFileName.xml")
+        } else if (inputText.startsWith(".menu.")) {
+            println("YESS!!!")
+            println("Generating new url for menu : $inputText")
+            val menuFileName = CommonParser.parseMenuFileName(inputText)
+            val currentUrl = window.location.toString()
+            //https://github.com/theapache64/swipenetic/blob/master/app/src/main/java/com/theapache64/swipenetic/ui/activities/chart/ChartActivity.kt
+            callback("${currentUrl.split("main")[0]}main/res/menu/$menuFileName.xml")
         } else if (imports.isNotEmpty()) {
 
-            val currentPackageName = KotlinParser.currentPackageName(getFullCode())
+            val currentPackageName = KotlinParser.getCurrentPackageName(getFullCode())
 
             // Getting possible import statements for the class
             val matchingImport = getMatchingImport(inputText, currentPackageName, htmlSpanElement)

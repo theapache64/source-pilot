@@ -20,6 +20,10 @@ class AndroidXMLSupport : LanguageSupport() {
                 val fileName = CommonParser.parseValueName(inputText)
                 "drawable/$fileName.xml"
             }
+            inputText.matches("@layout\\/.+") -> {
+                val fileName = CommonParser.parseValueName(inputText)
+                "layout/$fileName.xml"
+            }
             else -> null
         }
 

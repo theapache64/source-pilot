@@ -5,7 +5,10 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/languages/AndroidXMLSupport.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/languages/AndroidXMLSupport.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/languages/JavaSupport.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/languages/JavaSupport.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/languages/KotlinSupport.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/languages/KotlinSupport.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/CommonParser.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/CommonParser.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/KotlinParser.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/KotlinParser.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/SupportManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/SupportManager.kt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -106,7 +109,7 @@
       <workItem from="1569645228683" duration="20225000" />
       <workItem from="1569817878231" duration="2331000" />
       <workItem from="1569907006991" duration="1200000" />
-      <workItem from="1570092265973" duration="5857000" />
+      <workItem from="1570092265973" duration="11403000" />
     </task>
     <servers />
   </component>
