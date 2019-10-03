@@ -13,10 +13,24 @@ val supportManager = SupportManager()
 val support = supportManager.getSupportForCurrentFile()
 
 fun main() {
+
+    document.onreadystatechange = {
+        println("SOMETHING HAPPENED")
+    }
+
+
+
+    window.onpopstate = {
+        println("POPS!!")
+    }
+
+
     activateSourcePilot()
 }
 
+
 private fun activateSourcePilot() {
+
     println("✈ source-pilot activated")
 
     // Changing non span elements to span elements

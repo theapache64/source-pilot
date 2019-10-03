@@ -15,6 +15,7 @@ class AndroidXMLSupport : LanguageSupport() {
             inputText.matches("@style\\/.+") -> "values/styles.xml"
             inputText.matches("@string\\/.+") -> "values/strings.xml"
             inputText.matches("@color\\/.+") -> "values/colors.xml"
+            inputText.matches("@dimen/.+") -> "values/dimens.xml"
             inputText.matches("@drawable\\/.+") -> {
                 val fileName = CommonParser.parseValueName(inputText)
                 "drawable/$fileName.xml"
