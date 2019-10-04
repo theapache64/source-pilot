@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ea750493-3fa5-4cb5-9b6e-2a7e7c47de9e" name="Default Changelist" comment="" />
+    <list default="true" id="ea750493-3fa5-4cb5-9b6e-2a7e7c47de9e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/theapache64.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/GitHubUtils.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/languages/AndroidXMLSupport.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/languages/AndroidXMLSupport.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/languages/JavaSupport.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/languages/JavaSupport.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/languages/KotlinSupport.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/languages/KotlinSupport.kt" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,10 +25,10 @@
       <list>
         <option value="HTML File" />
         <option value="package.json" />
+        <option value="JavaScript File" />
+        <option value="Kotlin Object" />
         <option value="Kotlin Class" />
         <option value="Kotlin File" />
-        <option value="Kotlin Object" />
-        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -102,6 +110,8 @@
       <workItem from="1569817878231" duration="2331000" />
       <workItem from="1569907006991" duration="1200000" />
       <workItem from="1570092265973" duration="11403000" />
+      <workItem from="1570162113080" duration="3640000" />
+      <workItem from="1570166174228" duration="12192000" />
     </task>
     <servers />
   </component>

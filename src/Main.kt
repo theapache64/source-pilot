@@ -2,6 +2,7 @@ import base.LanguageSupport
 import org.w3c.dom.*
 import org.w3c.xhr.XMLHttpRequest
 import utils.CodeModifier
+import utils.GitHubUtils
 import utils.SupportManager
 import kotlin.browser.document
 import kotlin.browser.window
@@ -10,16 +11,14 @@ var isControlActive = false;
 var activeElement: HTMLSpanElement? = null
 var resLink: String? = null
 var support: LanguageSupport? = null
-
 var prevUrl = window.location.toString()
+
 fun main() {
     activateSourcePilot()
 
     watchForUrlChange {
         println("URL changed, reactivating source pilot")
-        window.setTimeout({
-            activateSourcePilot()
-        }, 2000)
+        activateSourcePilot()
     }
 }
 
@@ -45,7 +44,8 @@ private fun activateSourcePilot() {
     val codeTable = document.querySelector("table.highlight")
 
     if (codeTable != null) {
-        println("Found code table : ${codeTable.textContent}")
+
+        println("Found code table ")
         val newCode = CodeModifier.getSpanWrapped(codeTable)
         codeTable.innerHTML = newCode
 
@@ -87,9 +87,18 @@ private fun activateSourcePilot() {
             }
         }
     } else {
-        println("Code table not found @${window.location}. Seems like it's not a file")
+        println("Code table not found @${window.location}")
+        if (GitHubUtils.isFile(window.location.toString())) {
+            println("Looks like the code is not ready yet. Scheduled recheck after one second..")
+            window.setTimeout({
+                activateSourcePilot()
+            }, 1000)
+        } else {
+            println("Seems like it's not a file")
+        }
     }
 }
+
 
 fun checkIsClickable(inputText: String) {
     println("Checking if $inputText is clickable ")

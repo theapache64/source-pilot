@@ -9,6 +9,11 @@ import kotlin.browser.window
 
 open class KotlinSupport : LanguageSupport() {
 
+    companion object {
+        private const val DATA_BINDING_IMPORT_REGEX = ".*\\.databinding\\..+Binding"
+        protected const val LAYOUT_PREFIX = ".layout."
+    }
+
     private val imports by lazy { KotlinParser.parseImports(getFullCode()) }
 
     /**
@@ -43,7 +48,8 @@ open class KotlinSupport : LanguageSupport() {
 
 
     override fun getNewResourceUrl(inputText: String, htmlSpanElement: HTMLSpanElement, callback: (String?) -> Unit) {
-        if (inputText.startsWith(".layout.")) {
+
+        if (inputText.startsWith(LAYOUT_PREFIX)) {
             println("Generating new url for layout : $inputText")
             val layoutFileName = CommonParser.parseLayoutFileName(inputText)
             val currentUrl = window.location.toString()
@@ -88,7 +94,12 @@ open class KotlinSupport : LanguageSupport() {
         return matchingImport != null &&
                 !matchingImport.startsWith("android.") &&
                 !matchingImport.startsWith("java.") &&
-                !matchingImport.startsWith("androidx.")
+                !matchingImport.startsWith("androidx.") &&
+                !isDataBindingImport(matchingImport)
+    }
+
+    private fun isDataBindingImport(matchingImport: String): Boolean {
+        return matchingImport.matches(DATA_BINDING_IMPORT_REGEX)
     }
 
     override fun getFileExtension(): String {

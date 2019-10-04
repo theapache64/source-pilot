@@ -43,9 +43,10 @@ class AndroidXMLSupport : LanguageSupport() {
         }
     }
 
+    /**
+     * To get line number
+     */
     private fun getLineNumber(fileUrl: String, valueName: String, callback: (Int) -> Unit) {
-        // normal : https://github.com/theapache64/swipenetic/blob/master/app/src/main/res/values/strings.xml
-        // raw : https://raw.githubusercontent.com/theapache64/swipenetic/master/app/src/main/res/values/strings.xml
         val rawUrl = fileUrl.replace("https://github.com", "https://raw.githubusercontent.com").replaceFirst("/blob", "")
         val xhr = XMLHttpRequest()
         xhr.open("GET", rawUrl)
