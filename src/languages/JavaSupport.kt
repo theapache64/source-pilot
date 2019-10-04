@@ -30,6 +30,11 @@ class JavaSupport : KotlinSupport() {
         }
     }
 
+    /**
+     * This will return sibling element in pyramid format
+     * For eg: if sibling are 1, 2, 3, 4, 5
+     * this method will return 5, 54, 543, 5432, 54321 if and only if the items are clickable
+     */
     private fun getUpperSiblingsSplitted(htmlSpanElement: HTMLSpanElement): String? {
 
         val sibSplitArr = mutableListOf<String>()
@@ -42,12 +47,13 @@ class JavaSupport : KotlinSupport() {
                 }
             }
         }
-        val newArr = mutableListOf<String>()
-        for (i in sibSplitArr.size - 1 downTo 0) {
-            console.log("I is ", i)
-            val newElement = sibSplitArr.subList(i, sibSplitArr.size).joinToString(separator = "")
-            if (isSupportedElement(newElement)) {
-                return newElement
+
+        if (sibSplitArr.isNotEmpty()) {
+            for (i in sibSplitArr.size - 1 downTo 0) {
+                val newElement = sibSplitArr.subList(i, sibSplitArr.size).joinToString(separator = "")
+                if (isSupportedElement(newElement)) {
+                    return newElement
+                }
             }
         }
         return null

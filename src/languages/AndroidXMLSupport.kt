@@ -6,6 +6,9 @@ import org.w3c.xhr.XMLHttpRequest
 import utils.CommonParser
 import kotlin.browser.window
 
+/**
+ * This class is used to support Android XML
+ */
 class AndroidXMLSupport : LanguageSupport() {
 
     override fun getNewResourceUrl(inputText: String, htmlSpanElement: HTMLSpanElement, callback: (String?) -> Unit) {
