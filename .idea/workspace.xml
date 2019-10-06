@@ -3,7 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="ea750493-3fa5-4cb5-9b6e-2a7e7c47de9e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/CommonParser.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/CommonParser.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/languages/AndroidXMLSupport.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/languages/AndroidXMLSupport.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/XMLLineFinder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/XMLLineFinder.kt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -109,7 +110,7 @@
       <workItem from="1570092265973" duration="11403000" />
       <workItem from="1570162113080" duration="3640000" />
       <workItem from="1570166174228" duration="18557000" />
-      <workItem from="1570363482119" duration="5150000" />
+      <workItem from="1570363482119" duration="5734000" />
     </task>
     <servers />
   </component>

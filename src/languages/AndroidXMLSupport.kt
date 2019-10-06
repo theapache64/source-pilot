@@ -35,15 +35,26 @@ class AndroidXMLSupport : LanguageSupport() {
             callback(fileUrl)
             // Getting line number
             val valueName = CommonParser.parseValueName(inputText)
-            if (valueName != null && !fileName.startsWith("drawable")) {
+            if (valueName != null && hasLineNumber(inputText)) {
                 println("Getting line number..,.")
                 XMLLineFinder.getLineNumber(fileUrl, valueName) { lineNumber ->
-                    callback("$fileUrl#L$lineNumber")
+                    if (lineNumber > 0) {
+                        callback("$fileUrl#L$lineNumber")
+                    } else {
+                        callback(null)
+                    }
                 }
             }
         } else {
             callback(null)
         }
+    }
+
+    private fun hasLineNumber(valueName: String): Boolean {
+        return valueName.matches("@string/") ||
+                valueName.matches("@style/") ||
+                valueName.matches("@dimen/") ||
+                valueName.matches("@color/")
     }
 
 

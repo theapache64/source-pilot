@@ -28,6 +28,6 @@ object XMLLineFinder {
                 return index + 1
             }
         }
-        return 1
+        return -1
     }
 }
