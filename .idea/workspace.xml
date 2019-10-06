@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ea750493-3fa5-4cb5-9b6e-2a7e7c47de9e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/utils/XMLLineFinder.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/languages/AndroidXMLSupport.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/languages/AndroidXMLSupport.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/languages/KotlinSupport.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/languages/KotlinSupport.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/KotlinParser.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/KotlinParser.kt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -49,7 +45,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="TEXT&#10;HTML" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/libs/kotlin-js-jquery-3.2.0-0.jar!/" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
@@ -57,6 +53,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/libs" />
     </key>
   </component>
@@ -110,7 +107,7 @@
       <workItem from="1570092265973" duration="11403000" />
       <workItem from="1570162113080" duration="3640000" />
       <workItem from="1570166174228" duration="18557000" />
-      <workItem from="1570363482119" duration="1594000" />
+      <workItem from="1570363482119" duration="2090000" />
     </task>
     <servers />
   </component>
