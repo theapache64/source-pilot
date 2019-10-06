@@ -5,7 +5,7 @@ object CommonParser {
     private val EXT_PATTERN = "\\.(\\w+)".toRegex()
     private val LAYOUT_NAME = "layout\\.(.+)\\)".toRegex()
     private val MENU_NAME = "menu\\.(.+)\\)".toRegex()
-    private val XML_VALUE = "\\/(\\w+)".toRegex()
+    private val XML_VALUE = "\\/([\\w.]+)".toRegex()
 
     fun parseFileExt(currentUrl: String): String? {
         val lastResult = EXT_PATTERN.findAll(currentUrl).lastOrNull()

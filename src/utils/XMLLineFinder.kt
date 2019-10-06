@@ -21,8 +21,9 @@ object XMLLineFinder {
     }
 
     private fun getLineNumber(data: String, value: String): Int {
-        val x = data.split("\n")
-        x.forEachIndexed { index, line ->
+        println("Searching for $value")
+        val lines = data.split("\n")
+        lines.forEachIndexed { index, line ->
             if (line.contains("\"$value\"")) {
                 return index + 1
             }
