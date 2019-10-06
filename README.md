@@ -1,4 +1,4 @@
-![](extras/logo/banner.png)
+![](extras/graphics/banner.png)
 
 # source-pilot
 
