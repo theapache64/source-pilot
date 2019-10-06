@@ -1,4 +1,5 @@
 import base.LanguageSupport
+import extensions.startsWithUppercaseLetter
 import org.w3c.dom.*
 import org.w3c.xhr.XMLHttpRequest
 import utils.CodeModifier
@@ -67,8 +68,18 @@ private fun activateSourcePilot() {
 
             // Mouse click
             node.onclick = {
-                if (isControlActive && resLink != null) {
-                    window.open(resLink!!, "_blank")
+                if (isControlActive) {
+                    if (resLink != null) {
+                        window.open(resLink!!, "_blank")
+                    } else {
+                        val clickedCompName = activeElement?.textContent?.trim() ?: "The component"
+                        if (clickedCompName.startsWithUppercaseLetter()) {
+                            window.alert("$clickedCompName is either from Android SDK or from external dependencies")
+                        } else {
+                            // Navigating to method definition
+                            window.alert("Navigating to/with method definition will be available in up coming versions...")
+                        }
+                    }
                 }
             }
         }
