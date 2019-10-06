@@ -5,6 +5,7 @@ import extensions.startsWithUppercaseLetter
 import org.w3c.dom.HTMLSpanElement
 import utils.CommonParser
 import utils.KotlinParser
+import utils.XMLLineFinder
 import kotlin.browser.window
 
 open class KotlinSupport : LanguageSupport() {
@@ -55,8 +56,15 @@ open class KotlinSupport : LanguageSupport() {
             val currentUrl = window.location.toString()
             //https://github.com/theapache64/swipenetic/blob/master/app/src/main/java/com/theapache64/swipenetic/ui/activities/chart/ChartActivity.kt
             callback("${currentUrl.split("main")[0]}main/res/layout/$layoutFileName.xml")
+        } else if (inputText.startsWith(".string.")) {
+            val stringResName = KotlinParser.getStringResName(inputText)
+            val currentUrl = window.location.toString()
+            val stringXml = "${currentUrl.split("main")[0]}main/res/values/strings.xml"
+            callback(stringXml)
+            XMLLineFinder.getLineNumber(stringXml, stringResName) { lineNumber ->
+                callback("$stringXml#L$lineNumber")
+            }
         } else if (inputText.startsWith(".menu.")) {
-            println("YESS!!!")
             println("Generating new url for menu : $inputText")
             val menuFileName = CommonParser.parseMenuFileName(inputText)
             val currentUrl = window.location.toString()
