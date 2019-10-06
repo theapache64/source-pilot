@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ea750493-3fa5-4cb5-9b6e-2a7e7c47de9e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/languages/AndroidXMLSupport.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/languages/AndroidXMLSupport.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/languages/JavaSupport.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/languages/JavaSupport.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/CodeModifier.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/CodeModifier.kt" afterDir="false" />
-    </list>
+    <list default="true" id="ea750493-3fa5-4cb5-9b6e-2a7e7c47de9e" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,7 +103,7 @@
       <workItem from="1569907006991" duration="1200000" />
       <workItem from="1570092265973" duration="11403000" />
       <workItem from="1570162113080" duration="3640000" />
-      <workItem from="1570166174228" duration="15938000" />
+      <workItem from="1570166174228" duration="16810000" />
     </task>
     <servers />
   </component>
