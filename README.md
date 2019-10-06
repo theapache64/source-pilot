@@ -1,3 +1,3 @@
-![](extras/logo/pilot-hat.svg)
+![](extras/logo/banner.png)
 
 # source-pilot
