@@ -17,6 +17,7 @@ You can install the extension via [Chrome Webstore](http://google.com)
 - [ ] JavaScript
 - [ ] Swift
 - [ ] Python
+- [ ] PHP
 
 ## Supported Features
 
@@ -25,7 +26,7 @@ You can install the extension via [Chrome Webstore](http://google.com)
     - [x] `R.layout` navigation 
     - [x] `R.string` navigation
     - [x] `R.menu` navigation
-    - [x] `import ` statement navigation
+    - [x] `import` statement navigation
     - [ ] in-class variable navigation
     - [ ] external-class variable navigation
     - [ ] in-class method navigation
@@ -43,7 +44,7 @@ You can install the extension via [Chrome Webstore](http://google.com)
 
 ## Contribution
 
-This project is entirely built on top of Kotlin JS. Feel free to create PRs
+This project is entirely built on top of pure Kotlin JS. Feel free to create PRs
 
 ## Credits
 
