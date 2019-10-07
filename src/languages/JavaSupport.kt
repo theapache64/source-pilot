@@ -1,6 +1,5 @@
 package languages
 
-import org.w3c.dom.Element
 import org.w3c.dom.HTMLSpanElement
 import org.w3c.dom.get
 
@@ -63,7 +62,7 @@ class JavaSupport : KotlinSupport() {
         return element.startsWith(LAYOUT_PREFIX) // can add more prefix here
     }
 
-    override fun getImportStatement(inputText: String): String {
-        return "import $inputText;"
+    override fun getImportStatement(importStatement: String): String {
+        return "import $importStatement;"
     }
 }

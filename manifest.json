@@ -1,6 +1,6 @@
 {
   "name": "Source Pilot",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "IDE like file navigation, for GitHub",
   "manifest_version": 2,
   "permissions": [
@@ -9,7 +9,9 @@
   ],
   "background": {
     "scripts": [
-      "background.js"
+      "out/production/source-pilot/lib/kotlin.js",
+      "out/production/source-pilot/chrome-wrappers.js",
+      "out/production/source-pilot/background-js.js"
     ],
     "persistent": false
   },
