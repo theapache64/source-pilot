@@ -7,17 +7,22 @@
     "activeTab",
     "tabs"
   ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": false
+  },
   "content_scripts": [
     {
       "matches": [
-        "https://github.com/*.kt",
-        "https://github.com/*.java"
+        "https://github.com/*"
       ],
       "js": [
         "out/production/source-pilot/lib/kotlin.js",
         "out/production/source-pilot/source-pilot.js"
       ],
-      "runat": "document_start"
+      "runat": "document_end"
     }
   ]
 }

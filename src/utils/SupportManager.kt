@@ -11,24 +11,21 @@ import kotlin.browser.window
  */
 class SupportManager {
 
-    companion object {
-        /**
-         * Supported files/technology by source-pilot
-         */
-        private val SUPPORTS = arrayOf(
-                KotlinSupport(),
-                JavaSupport(),
-                AndroidXMLSupport()
-        )
-    }
 
     /**
      * To get file support for current file
      */
     fun getSupportForCurrentFile(): LanguageSupport? {
-        val fileExt = Parser.parseFileExt(window.location.toString())
-        for (support in SUPPORTS) {
-            if (support.getFileExtension().equals(fileExt)) {
+
+        val arrayOfLanguageSupports = arrayOf(
+                KotlinSupport(),
+                JavaSupport(),
+                AndroidXMLSupport()
+        )
+
+        val currentFileExt = CommonParser.parseFileExt(window.location.toString())
+        for (support in arrayOfLanguageSupports) {
+            if (support.getFileExtension() == currentFileExt) {
                 return support
             }
         }
