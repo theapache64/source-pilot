@@ -22,8 +22,22 @@ object CodeModifier {
                         val x = node as Element
                         sb.append(x.outerHTML)
                     } else {
+                        // text element, converting it to span
                         val textContent = node.textContent
-                        sb.append("<span>$textContent</span>")
+                        if (textContent != null) {
+                            if (textContent.startsWith(" ")) {
+                                // two span needed
+                                val spaceAndContent = parseSpaceAndContent(textContent)
+                                if (spaceAndContent != null) {
+                                    sb.append("<span>${spaceAndContent.first}</span>")
+                                    sb.append("<span>${spaceAndContent.second}</span>")
+                                } else {
+                                    sb.append("<span>$textContent</span>")
+                                }
+                            } else {
+                                sb.append("<span>$textContent</span>")
+                            }
+                        }
                     }
                 }
             }
@@ -32,6 +46,16 @@ object CodeModifier {
                 td.innerHTML = sb.toString()
             }
         }
+    }
+
+    private val SPACE_AND_CONTENT_REGEX = "(?<spaces>\\s*)(?<content>[^\\s]*)".toRegex()
+    private fun parseSpaceAndContent(textContent: String): Pair<String, String>? {
+        val result = SPACE_AND_CONTENT_REGEX.find(textContent)
+        if (result != null) {
+            val groups = result.groups
+            return Pair(groups[1]!!.value, groups[2]!!.value)
+        }
+        return null
     }
 
 }
