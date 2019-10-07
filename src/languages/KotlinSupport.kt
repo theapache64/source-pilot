@@ -52,7 +52,7 @@ open class KotlinSupport : LanguageSupport() {
 
     override fun getNewResourceUrl(inputText: String, htmlSpanElement: HTMLSpanElement, callback: (String?) -> Unit) {
 
-        if (isNotKotlinDataTypes(inputText)) {
+        if (!isKotlinDataType(inputText)) {
             if (inputText.startsWith(LAYOUT_PREFIX)) {
                 println("Generating new url for layout : $inputText")
                 val layoutFileName = CommonParser.parseLayoutFileName(inputText)
@@ -102,7 +102,7 @@ open class KotlinSupport : LanguageSupport() {
         }
     }
 
-    private fun isNotKotlinDataTypes(_inputText: String): Boolean {
+    private fun isKotlinDataType(_inputText: String): Boolean {
         val inputText = _inputText.replace("?", "")
         return when (inputText) {
             "Boolean",
