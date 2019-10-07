@@ -20,9 +20,11 @@ open class KotlinSupport : LanguageSupport() {
     /**
      * To get matching import for the input passed from the imports in the file.
      */
-    private fun getMatchingImport(inputText: String, currentPackageName: String, htmlSpanElement: HTMLSpanElement): String? {
+    private fun getMatchingImport(_inputText: String, currentPackageName: String, htmlSpanElement: HTMLSpanElement): String? {
 
-        val matchingImports = imports.filter { it.endsWith(".${inputText}") }
+        // Removing question mark (optional-kotlin)
+        val inputText = _inputText.replace("?", "")
+        val matchingImports = imports.filter { it.endsWith(".$inputText") }
         println("Matching imports are : $matchingImports")
         return if (matchingImports.isNotEmpty()) {
             matchingImports.first()
@@ -43,8 +45,8 @@ open class KotlinSupport : LanguageSupport() {
         }
     }
 
-    protected open fun getImportStatement(inputText: String): String {
-        return "import $inputText"
+    protected open fun getImportStatement(importStatement: String): String {
+        return "import $importStatement"
     }
 
 

@@ -23,9 +23,7 @@ object CodeModifier {
                         sb.append(x.outerHTML)
                     } else {
                         val textContent = node.textContent
-                        if (textContent != null && textContent.trim().isNotEmpty()) {
-                            sb.append("<span>${node.textContent}</span>")
-                        }
+                        sb.append("<span>$textContent</span>")
                     }
                 }
             }
