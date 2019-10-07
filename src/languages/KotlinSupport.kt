@@ -13,6 +13,8 @@ open class KotlinSupport : LanguageSupport() {
     companion object {
         private const val DATA_BINDING_IMPORT_REGEX = ".*\\.databinding\\..+Binding"
         protected const val LAYOUT_PREFIX = ".layout."
+        protected const val STRING_PREFIX = ".string."
+        protected const val MENU_PREFIX = ".menu."
     }
 
     private val imports by lazy { KotlinParser.parseImports(getFullCode()) }
@@ -53,12 +55,13 @@ open class KotlinSupport : LanguageSupport() {
     override fun getNewResourceUrl(inputText: String, htmlSpanElement: HTMLSpanElement, callback: (String?) -> Unit) {
 
         if (!isKotlinDataType(inputText)) {
+
             if (inputText.startsWith(LAYOUT_PREFIX)) {
                 println("Generating new url for layout : $inputText")
                 val layoutFileName = CommonParser.parseLayoutFileName(inputText)
                 val currentUrl = window.location.toString()
                 callback("${currentUrl.split("main")[0]}main/res/layout/$layoutFileName.xml")
-            } else if (inputText.startsWith(".string.")) {
+            } else if (inputText.startsWith(STRING_PREFIX)) {
                 val stringResName = KotlinParser.getStringResName(inputText)
                 val currentUrl = window.location.toString()
                 val stringXml = "${currentUrl.split("main")[0]}main/res/values/strings.xml"
@@ -66,11 +69,14 @@ open class KotlinSupport : LanguageSupport() {
                 XMLLineFinder.getLineNumber(stringXml, stringResName) { lineNumber ->
                     callback("$stringXml#L$lineNumber")
                 }
-            } else if (inputText.startsWith(".menu.")) {
+            } else if (inputText.startsWith(MENU_PREFIX)) {
                 println("Generating new url for menu : $inputText")
                 val menuFileName = CommonParser.parseMenuFileName(inputText)
                 val currentUrl = window.location.toString()
                 callback("${currentUrl.split("main")[0]}main/res/menu/$menuFileName.xml")
+            } else if (KotlinParser.isInternalMethodCall(inputText)) {
+                val methodName = KotlinParser.parseInternalMethodName(inputText)
+                val lineNumber = getMethodDefinitionLineNumber(methodName)
             } else if (imports.isNotEmpty()) {
 
                 val currentPackageName = KotlinParser.getCurrentPackageName(getFullCode())
@@ -91,13 +97,20 @@ open class KotlinSupport : LanguageSupport() {
                     callback(null)
                 }
             } else {
-                println("No imports found")
+                println("No match found")
                 callback(null)
             }
         } else {
             println("It was a kotlin data type")
             callback(null)
         }
+    }
+
+    private fun getMethodDefinitionLineNumber(methodName: String): Int {
+        val code = getFullCode()
+        println(code)
+
+        return 1
     }
 
     private fun isKotlinDataType(_inputText: String): Boolean {
