@@ -48,8 +48,7 @@ private fun activateSourcePilot() {
     if (codeTable != null) {
 
         println("Found code table ")
-        val newCode = CodeModifier.getSpanWrapped(codeTable)
-        codeTable.innerHTML = newCode
+        CodeModifier.spanNonSpanned()
 
         // Element Mouse Over ib
         val allCodeSpan = document.querySelectorAll("table.highlight tbody tr td.blob-code > span")
