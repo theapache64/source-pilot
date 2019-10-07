@@ -11,6 +11,7 @@ import kotlin.browser.window
 var isControlActive = false;
 var activeElement: HTMLSpanElement? = null
 var resLink: String? = null
+var isNewTab: Boolean? = null
 var support: LanguageSupport? = null
 var prevUrl = window.location.toString()
 
@@ -49,6 +50,7 @@ private fun activateSourcePilot() {
 
         println("Found code table ")
         CodeModifier.spanNonSpanned()
+        CodeModifier.splitDotSpanned()
 
         // Element Mouse Over ib
         val allCodeSpan = document.querySelectorAll("table.highlight tbody tr td.blob-code > span")
@@ -70,14 +72,23 @@ private fun activateSourcePilot() {
             node.onclick = {
                 if (isControlActive) {
                     if (resLink != null) {
-                        window.open(resLink!!, "_blank")
-                    } else {
-                        val clickedCompName = activeElement?.textContent?.trim() ?: "The component"
-                        if (clickedCompName.startsWithUppercaseLetter()) {
-                            window.alert("$clickedCompName is either from Android SDK or from external dependencies")
+                        if (isNewTab != null && isNewTab == true) {
+                            window.open(resLink!!, "_blank")
                         } else {
-                            // Navigating to method definition
-                            window.alert("Navigating to/with method definition will be available in up coming versions...")
+                            window.location.assign(resLink.toString())
+                        }
+                    } else {
+                        val errorMessage = activeElement?.getAttribute("sp-error")
+                        if (errorMessage != null) {
+                            window.alert(errorMessage)
+                        } else {
+                            val clickedCompName = activeElement?.textContent?.trim() ?: "The component"
+                            if (clickedCompName.startsWithUppercaseLetter()) {
+                                window.alert("$clickedCompName is either from Android SDK or from external dependencies")
+                            } else {
+                                // Navigating to method definition
+                                window.alert("Navigating to/with method definition will be available in up coming versions...")
+                            }
                         }
                     }
                 }
@@ -113,14 +124,16 @@ private fun activateSourcePilot() {
 
 fun checkIsClickable(inputText: String) {
     println("Checking if $inputText is clickable ")
-    support?.getNewResourceUrl(inputText, activeElement!!) { newUrl ->
+    support?.getNewResourceUrl(inputText, activeElement!!) { newUrl, newTab ->
         if (newUrl != null) {
             resLink = newUrl
+            isNewTab = newTab
             activeElement?.style?.textDecoration = "underline"
             doubleCheckUrl(newUrl)
         } else {
             println("New url is null, so it's not clickable :(")
             resLink = null
+            isNewTab = null
             removeUnderlineFromActiveElement()
         }
     }

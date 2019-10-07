@@ -1,7 +1,6 @@
 package utils
 
-import org.w3c.dom.Element
-import org.w3c.dom.get
+import org.w3c.dom.*
 import kotlin.browser.document
 import kotlin.dom.isElement
 
@@ -22,8 +21,22 @@ object CodeModifier {
                         val x = node as Element
                         sb.append(x.outerHTML)
                     } else {
+                        // text element, converting it to span
                         val textContent = node.textContent
-                        sb.append("<span>$textContent</span>")
+                        if (textContent != null) {
+                            if (textContent.startsWith(" ")) {
+                                // two span needed
+                                val spaceAndContent = parseSpaceAndContent(textContent)
+                                if (spaceAndContent != null) {
+                                    sb.append("<span>${spaceAndContent.first}</span>")
+                                    sb.append("<span>${spaceAndContent.second}</span>")
+                                } else {
+                                    sb.append("<span>$textContent</span>")
+                                }
+                            } else {
+                                sb.append("<span>$textContent</span>")
+                            }
+                        }
                     }
                 }
             }
@@ -31,6 +44,34 @@ object CodeModifier {
             if (sb.isNotEmpty()) {
                 td.innerHTML = sb.toString()
             }
+        }
+    }
+
+    private val SPACE_AND_CONTENT_REGEX = "(?<spaces>\\s*)(?<content>.+)".toRegex()
+    private fun parseSpaceAndContent(textContent: String): Pair<String, String>? {
+        val result = SPACE_AND_CONTENT_REGEX.find(textContent)
+        if (result != null) {
+            val groups = result.groups
+            return Pair(groups[1]!!.value, groups[2]!!.value)
+        }
+        return null
+    }
+
+    fun splitDotSpanned() {
+        val allSpans = document.querySelectorAll("table.highlight tbody tr td.blob-code > span")
+        allSpans.asList().forEach { _span ->
+            val span = _span as HTMLSpanElement
+            val spanClass = span.className
+            span.textContent?.let { spanText ->
+                if (spanText.contains(".")) {
+                    val sb = toString()
+                    val dotSplit = sb.split(".")
+                    val spanParent = span.parentElement as HTMLElement
+                    //TODO:
+                    span.remove()
+                }
+            }
+
         }
     }
 

@@ -14,17 +14,17 @@ class JavaSupport : KotlinSupport() {
         return "java"
     }
 
-    override fun getNewResourceUrl(inputText: String, htmlSpanElement: HTMLSpanElement, callback: (String?) -> Unit) {
-        super.getNewResourceUrl(inputText, htmlSpanElement) { newUrl ->
+    override fun getNewResourceUrl(inputText: String, htmlSpanElement: HTMLSpanElement, callback: (url: String?, isNewTab: Boolean) -> Unit) {
+        super.getNewResourceUrl(inputText, htmlSpanElement) { newUrl, isNewTab ->
             if (newUrl == null) {
                 val matchedText = getUpperSiblingsSplitted(htmlSpanElement)
                 if (matchedText != null) {
                     super.getNewResourceUrl(matchedText, htmlSpanElement, callback)
                 } else {
-                    callback(null)
+                    callback(null, false)
                 }
             } else {
-                callback(newUrl)
+                callback(newUrl, isNewTab)
             }
         }
     }
