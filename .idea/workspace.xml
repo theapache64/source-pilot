@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ea1e4661-a1e0-44e8-99a8-9a90465729d3" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/languages/KotlinSupport.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/languages/KotlinSupport.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/KotlinParser.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/KotlinParser.kt" afterDir="false" />
-    </list>
+    <list default="true" id="ea1e4661-a1e0-44e8-99a8-9a90465729d3" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -46,8 +42,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/languages/KotlinSupport.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="265">
-              <caret line="112" column="16" selection-start-line="112" selection-start-column="16" selection-end-line="112" selection-end-column="16" />
+            <state relative-caret-position="165">
+              <caret line="107" lean-forward="true" selection-start-line="107" selection-end-line="107" />
               <folding>
                 <element signature="n#!!block;n#getMatchingImport#0;n#!!block;n#KotlinSupport#0" />
               </folding>
@@ -222,11 +218,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11404000" />
+    <option name="totallyTimeSpent" value="11417000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="51" y="-4" width="1315" height="772" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.25768322" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -241,7 +236,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.32884902" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.32884902" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="11" />
       <window_info anchor="bottom" id="Messages" order="12" weight="0.32884902" />
@@ -350,8 +345,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/languages/KotlinSupport.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="265">
-          <caret line="112" column="16" selection-start-line="112" selection-start-column="16" selection-end-line="112" selection-end-column="16" />
+        <state relative-caret-position="165">
+          <caret line="107" lean-forward="true" selection-start-line="107" selection-end-line="107" />
           <folding>
             <element signature="n#!!block;n#getMatchingImport#0;n#!!block;n#KotlinSupport#0" />
           </folding>
