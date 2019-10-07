@@ -57,7 +57,6 @@ open class KotlinSupport : LanguageSupport() {
                 println("Generating new url for layout : $inputText")
                 val layoutFileName = CommonParser.parseLayoutFileName(inputText)
                 val currentUrl = window.location.toString()
-                //https://github.com/theapache64/swipenetic/blob/master/app/src/main/java/com/theapache64/swipenetic/ui/activities/chart/ChartActivity.kt
                 callback("${currentUrl.split("main")[0]}main/res/layout/$layoutFileName.xml")
             } else if (inputText.startsWith(".string.")) {
                 val stringResName = KotlinParser.getStringResName(inputText)
@@ -71,7 +70,6 @@ open class KotlinSupport : LanguageSupport() {
                 println("Generating new url for menu : $inputText")
                 val menuFileName = CommonParser.parseMenuFileName(inputText)
                 val currentUrl = window.location.toString()
-                //https://github.com/theapache64/swipenetic/blob/master/app/src/main/java/com/theapache64/swipenetic/ui/activities/chart/ChartActivity.kt
                 callback("${currentUrl.split("main")[0]}main/res/menu/$menuFileName.xml")
             } else if (imports.isNotEmpty()) {
 
@@ -124,6 +122,7 @@ open class KotlinSupport : LanguageSupport() {
                 !matchingImport.startsWith("android.") &&
                 !matchingImport.startsWith("java.") &&
                 !matchingImport.startsWith("androidx.") &&
+                !matchingImport.startsWith("kotlinx.android.synthetic.") &&
                 !matchingImport.startsWith("com.google.android.material.") &&
                 !isDataBindingImport(matchingImport)
     }
