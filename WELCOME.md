@@ -1,3 +1,5 @@
 ![](extras/graphics/banner.png)
 
-## Aye, Welcome
+## Ahoy
+
+- This is welcome page
