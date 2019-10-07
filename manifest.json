@@ -9,9 +9,9 @@
   ],
   "background": {
     "scripts": [
-      "out/production/background-js/lib/kotlin.js",
-      "out/production/chrome-wrappers/chrome-wrappers.js",
-      "out/production/background-js/background-js.js"
+      "out/production/source-pilot/lib/kotlin.js",
+      "out/production/source-pilot/chrome-wrappers.js",
+      "out/production/source-pilot/background-js.js"
     ],
     "persistent": false
   },

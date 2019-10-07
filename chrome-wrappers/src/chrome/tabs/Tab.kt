@@ -1,6 +1,6 @@
+@file:Suppress("UNCHECKED_CAST_TO_EXTERNAL_INTERFACE")
+
 package chrome.tabs
 
-
-@Suppress("UNCHECKED_CAST_TO_NATIVE_INTERFACE")
 inline fun Tab(block: Tab.() -> Unit) =
         (js("{}") as Tab).apply(block)
