@@ -18,6 +18,7 @@ open class KotlinSupport : LanguageSupport() {
         protected const val LAYOUT_PREFIX = ".layout."
         protected const val STRING_PREFIX = ".string."
         protected const val MENU_PREFIX = ".menu."
+        private val REPLACE_REGEX = Regex("[^a-zA-Z._\\)\\(]+")
     }
 
     private val imports by lazy { KotlinParser.parseImports(getFullCode()) }
@@ -56,8 +57,10 @@ open class KotlinSupport : LanguageSupport() {
 
 
     override fun getNewResourceUrl(inputText: String, htmlSpanElement: HTMLSpanElement, callback: (url: String?, isNewTab: Boolean) -> Unit) {
-        if (!isKotlinDataType(inputText)) {
+        val x = getUpperSiblingsSplitted(htmlSpanElement)
+        console.log("X is ", x)
 
+        if (!isKotlinDataType(inputText)) {
             if (inputText.startsWith(LAYOUT_PREFIX)) {
                 println("Generating new url for layout : $inputText")
                 val layoutFileName = CommonParser.parseLayoutFileName(inputText)
@@ -192,6 +195,39 @@ open class KotlinSupport : LanguageSupport() {
 
     override fun getFileExtension(): String {
         return "kt"
+    }
+
+    /**
+     * This will return sibling element in pyramid format
+     * For eg: if sibling are 1, 2, 3, 4, 5
+     * this method will return 5, 54, 543, 5432, 54321 if and only if the items are clickable
+     */
+    protected fun getUpperSiblingsSplitted(htmlSpanElement: HTMLSpanElement): String? {
+
+        val sibSplitArr = mutableListOf<String>()
+        val children = htmlSpanElement.parentElement?.childNodes
+        if (children != null) {
+            for (childIndex in 0..children.length) {
+                val element = children[childIndex]?.textContent?.trim()?.replace(REPLACE_REGEX, "")
+                if (element != null) {
+                    sibSplitArr.add(element)
+                }
+            }
+        }
+
+        if (sibSplitArr.isNotEmpty()) {
+            for (i in sibSplitArr.size - 1 downTo 0) {
+                val newElement = sibSplitArr.subList(i, sibSplitArr.size).joinToString(separator = "")
+                if (isSupportedElement(newElement)) {
+                    return newElement
+                }
+            }
+        }
+        return null
+    }
+
+    private fun isSupportedElement(element: String): Boolean {
+        return element.startsWith(LAYOUT_PREFIX) // can add more prefix here
     }
 
 }

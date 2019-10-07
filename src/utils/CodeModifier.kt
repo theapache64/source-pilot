@@ -2,6 +2,8 @@ package utils
 
 import org.w3c.dom.*
 import kotlin.browser.document
+import kotlin.dom.addClass
+import kotlin.dom.appendElement
 import kotlin.dom.isElement
 
 object CodeModifier {
@@ -58,21 +60,69 @@ object CodeModifier {
     }
 
     fun splitDotSpanned() {
-        val allSpans = document.querySelectorAll("table.highlight tbody tr td.blob-code > span")
+
+        val tdBlobCodes = document.querySelectorAll("table.highlight tbody tr td.blob-code")
+        tdBlobCodes.asList().forEach { _td ->
+            val td = _td as HTMLElement
+            val sb = StringBuilder()
+            td.childNodes.asList().forEach { childNode ->
+                if (childNode is HTMLSpanElement) {
+                    val spanContent = childNode.textContent
+                    if (spanContent != null) {
+                        if (spanContent.contains(".")) {
+
+                            val dotSplit = spanContent.split(".")
+
+                            for (dot in dotSplit.withIndex()) {
+                                val newSpanContent = if (dot.index == 0) {
+                                    dot.value
+                                } else {
+                                    ".${dot.value}"
+                                }
+
+                                val newSpan = "<span class=\"${childNode.className}\">$newSpanContent</span>"
+                                sb.append(newSpan)
+                            }
+
+                        } else {
+                            sb.append(childNode.outerHTML)
+                        }
+                    } else {
+                        sb.append(childNode.outerHTML)
+                    }
+                } else {
+                    println("Not span")
+                    sb.append(childNode.textContent)
+                }
+            }
+
+            td.innerHTML = sb.toString()
+
+        }
+
+
+        /*val allSpans = document.querySelectorAll("table.highlight tbody tr td.blob-code > span")
         allSpans.asList().forEach { _span ->
             val span = _span as HTMLSpanElement
             val spanClass = span.className
             span.textContent?.let { spanText ->
                 if (spanText.contains(".")) {
-                    val sb = toString()
-                    val dotSplit = sb.split(".")
+                    val dotSplit = spanText.split(".")
                     val spanParent = span.parentElement as HTMLElement
-                    //TODO:
-                    span.remove()
+                    for (dot in dotSplit.withIndex()) {
+                        val newSpan = document.createElement("span")
+                        newSpan.addClass(spanClass)
+                        newSpan.textContent = if (dot.index == dotSplit.size - 1) {
+                            dot.value
+                        } else {
+                            "${dot.value}."
+                        }
+                        spanParent.prepend(newSpan)
+                    }
                 }
             }
 
-        }
+        }*/
     }
 
 }
