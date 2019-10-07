@@ -52,48 +52,67 @@ open class KotlinSupport : LanguageSupport() {
 
     override fun getNewResourceUrl(inputText: String, htmlSpanElement: HTMLSpanElement, callback: (String?) -> Unit) {
 
-        if (inputText.startsWith(LAYOUT_PREFIX)) {
-            println("Generating new url for layout : $inputText")
-            val layoutFileName = CommonParser.parseLayoutFileName(inputText)
-            val currentUrl = window.location.toString()
-            //https://github.com/theapache64/swipenetic/blob/master/app/src/main/java/com/theapache64/swipenetic/ui/activities/chart/ChartActivity.kt
-            callback("${currentUrl.split("main")[0]}main/res/layout/$layoutFileName.xml")
-        } else if (inputText.startsWith(".string.")) {
-            val stringResName = KotlinParser.getStringResName(inputText)
-            val currentUrl = window.location.toString()
-            val stringXml = "${currentUrl.split("main")[0]}main/res/values/strings.xml"
-            callback(stringXml)
-            XMLLineFinder.getLineNumber(stringXml, stringResName) { lineNumber ->
-                callback("$stringXml#L$lineNumber")
-            }
-        } else if (inputText.startsWith(".menu.")) {
-            println("Generating new url for menu : $inputText")
-            val menuFileName = CommonParser.parseMenuFileName(inputText)
-            val currentUrl = window.location.toString()
-            //https://github.com/theapache64/swipenetic/blob/master/app/src/main/java/com/theapache64/swipenetic/ui/activities/chart/ChartActivity.kt
-            callback("${currentUrl.split("main")[0]}main/res/menu/$menuFileName.xml")
-        } else if (imports.isNotEmpty()) {
-
-            val currentPackageName = KotlinParser.getCurrentPackageName(getFullCode())
-
-            // Getting possible import statements for the class
-            val matchingImport = getMatchingImport(inputText, currentPackageName, htmlSpanElement)
-
-            if (isClickableImport(matchingImport)) {
+        if (isNotKotlinDataTypes(inputText)) {
+            if (inputText.startsWith(LAYOUT_PREFIX)) {
+                println("Generating new url for layout : $inputText")
+                val layoutFileName = CommonParser.parseLayoutFileName(inputText)
                 val currentUrl = window.location.toString()
-                val curFileExt = CommonParser.parseFileExt(currentUrl)
-                val packageSlash = '/' + currentPackageName.replace('.', '/');
-                val windowLocSplit = currentUrl.split(packageSlash)
+                //https://github.com/theapache64/swipenetic/blob/master/app/src/main/java/com/theapache64/swipenetic/ui/activities/chart/ChartActivity.kt
+                callback("${currentUrl.split("main")[0]}main/res/layout/$layoutFileName.xml")
+            } else if (inputText.startsWith(".string.")) {
+                val stringResName = KotlinParser.getStringResName(inputText)
+                val currentUrl = window.location.toString()
+                val stringXml = "${currentUrl.split("main")[0]}main/res/values/strings.xml"
+                callback(stringXml)
+                XMLLineFinder.getLineNumber(stringXml, stringResName) { lineNumber ->
+                    callback("$stringXml#L$lineNumber")
+                }
+            } else if (inputText.startsWith(".menu.")) {
+                println("Generating new url for menu : $inputText")
+                val menuFileName = CommonParser.parseMenuFileName(inputText)
+                val currentUrl = window.location.toString()
+                //https://github.com/theapache64/swipenetic/blob/master/app/src/main/java/com/theapache64/swipenetic/ui/activities/chart/ChartActivity.kt
+                callback("${currentUrl.split("main")[0]}main/res/menu/$menuFileName.xml")
+            } else if (imports.isNotEmpty()) {
 
-                // Returning new url
-                callback("${windowLocSplit[0]}/${matchingImport!!.replace('.', '/')}.$curFileExt#L1")
+                val currentPackageName = KotlinParser.getCurrentPackageName(getFullCode())
+
+                // Getting possible import statements for the class
+                val matchingImport = getMatchingImport(inputText, currentPackageName, htmlSpanElement)
+
+                if (isClickableImport(matchingImport)) {
+                    val currentUrl = window.location.toString()
+                    val curFileExt = CommonParser.parseFileExt(currentUrl)
+                    val packageSlash = '/' + currentPackageName.replace('.', '/');
+                    val windowLocSplit = currentUrl.split(packageSlash)
+
+                    // Returning new url
+                    callback("${windowLocSplit[0]}/${matchingImport!!.replace('.', '/')}.$curFileExt#L1")
+                } else {
+                    println("No import matched! Matching importing was : $matchingImport")
+                    callback(null)
+                }
             } else {
-                println("No import matched! Matching importing was : $matchingImport")
+                println("No imports found")
                 callback(null)
             }
         } else {
-            println("No imports found")
+            println("It was a kotlin data type")
             callback(null)
+        }
+    }
+
+    private fun isNotKotlinDataTypes(_inputText: String): Boolean {
+        val inputText = _inputText.replace("?", "")
+        return when (inputText) {
+            "Boolean",
+            "Long",
+            "Float",
+            "Double",
+            "Char",
+            "Int",
+            "String" -> true
+            else -> false
         }
     }
 
@@ -105,6 +124,7 @@ open class KotlinSupport : LanguageSupport() {
                 !matchingImport.startsWith("android.") &&
                 !matchingImport.startsWith("java.") &&
                 !matchingImport.startsWith("androidx.") &&
+                !matchingImport.startsWith("com.google.android.material.") &&
                 !isDataBindingImport(matchingImport)
     }
 
