@@ -1,7 +1,6 @@
 package utils
 
-import org.w3c.dom.Element
-import org.w3c.dom.get
+import org.w3c.dom.*
 import kotlin.browser.document
 import kotlin.dom.isElement
 
@@ -56,6 +55,24 @@ object CodeModifier {
             return Pair(groups[1]!!.value, groups[2]!!.value)
         }
         return null
+    }
+
+    fun splitDotSpanned() {
+        val allSpans = document.querySelectorAll("table.highlight tbody tr td.blob-code > span")
+        allSpans.asList().forEach { _span ->
+            val span = _span as HTMLSpanElement
+            val spanClass = span.className
+            span.textContent?.let { spanText ->
+                if (spanText.contains(".")) {
+                    val sb = toString()
+                    val dotSplit = sb.split(".")
+                    val spanParent = span.parentElement as HTMLElement
+                    //TODO:
+                    span.remove()
+                }
+            }
+
+        }
     }
 
 }

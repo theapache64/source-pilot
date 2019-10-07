@@ -105,6 +105,9 @@ open class KotlinSupport : LanguageSupport() {
                 } else {
                     callback(null, false)
                 }
+            } else if (KotlinParser.isExternalMethodCall(inputText)) {
+                println("External method call found")
+
             } else if (imports.isNotEmpty()) {
 
                 val currentPackageName = KotlinParser.getCurrentPackageName(getFullCode())
