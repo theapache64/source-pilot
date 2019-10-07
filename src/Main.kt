@@ -15,6 +15,7 @@ var support: LanguageSupport? = null
 var prevUrl = window.location.toString()
 
 fun main() {
+
     activateSourcePilot()
 
     watchForUrlChange {

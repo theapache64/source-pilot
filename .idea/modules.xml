@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/background-js/background-js.iml" filepath="$PROJECT_DIR$/background-js/background-js.iml" />
+      <module fileurl="file://$PROJECT_DIR$/chrome-wrappers/chrome-wrappers.iml" filepath="$PROJECT_DIR$/chrome-wrappers/chrome-wrappers.iml" />
       <module fileurl="file://$PROJECT_DIR$/source-pilot.iml" filepath="$PROJECT_DIR$/source-pilot.iml" />
     </modules>
   </component>
