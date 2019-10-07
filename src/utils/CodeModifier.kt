@@ -48,7 +48,7 @@ object CodeModifier {
         }
     }
 
-    private val SPACE_AND_CONTENT_REGEX = "(?<spaces>\\s*)(?<content>[^\\s]*)".toRegex()
+    private val SPACE_AND_CONTENT_REGEX = "(?<spaces>\\s*)(?<content>.+)".toRegex()
     private fun parseSpaceAndContent(textContent: String): Pair<String, String>? {
         val result = SPACE_AND_CONTENT_REGEX.find(textContent)
         if (result != null) {

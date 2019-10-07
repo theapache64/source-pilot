@@ -82,14 +82,26 @@ open class KotlinSupport : LanguageSupport() {
 
                 // internal method call
                 val methodName = KotlinParser.parseInternalMethodName(inputText)
-                val lineNumber = getMethodDefinitionLineNumber(methodName)
-                if (lineNumber > 0) {
-                    var currentUrl = window.location.toString()
-                    if (CommonParser.hasLineNumber(currentUrl)) {
-                        currentUrl = CommonParser.parseUrlOnly(currentUrl)
+                val lineNumbers = getMethodDefinitionLineNumber(methodName)
+                if (lineNumbers.isNotEmpty()) {
+                    if (lineNumbers.size == 1) {
+                        val lineNumber = lineNumbers.first()
+                        if (lineNumber > 0) {
+                            var currentUrl = window.location.toString()
+                            if (CommonParser.hasLineNumber(currentUrl)) {
+                                currentUrl = CommonParser.parseUrlOnly(currentUrl)
+                            }
+
+                            callback("$currentUrl#L$lineNumber", false)
+                        } else {
+                            callback(null, false)
+                        }
+                    } else {
+                        // multiple method definitions
+                        callback(null, false)
+                        htmlSpanElement.setAttribute("sp-error", "Selected method has multiple definitions")
                     }
 
-                    callback("$currentUrl#L$lineNumber", false)
                 } else {
                     callback(null, false)
                 }
@@ -122,7 +134,8 @@ open class KotlinSupport : LanguageSupport() {
         }
     }
 
-    private fun getMethodDefinitionLineNumber(methodName: String): Int {
+    private fun getMethodDefinitionLineNumber(methodName: String): List<Int> {
+        val lineNumbers = mutableListOf<Int>()
         val tdBlobCodes = document.querySelectorAll("table.highlight tbody tr td.blob-code")
         for (tdIndex in 0 until tdBlobCodes.length) {
             val td = tdBlobCodes[tdIndex] as Element
@@ -130,13 +143,13 @@ open class KotlinSupport : LanguageSupport() {
             if (codeLine != null && codeLine.trim().isNotEmpty()) {
                 val regex = getMethodRegEx(methodName)
                 val isMatch = codeLine.matches(regex)
-                println("$codeLine -> $regex -> $isMatch")
                 if (isMatch) {
-                    return td.id.replace("LC", "").toInt()
+                    val lineNumber = td.id.replace("LC", "").toInt()
+                    lineNumbers.add(lineNumber)
                 }
             }
         }
-        return -1
+        return lineNumbers
     }
 
     private fun getMethodRegEx(methodName: String): String {

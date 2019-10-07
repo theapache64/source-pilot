@@ -77,12 +77,17 @@ private fun activateSourcePilot() {
                             window.location.assign(resLink.toString())
                         }
                     } else {
-                        val clickedCompName = activeElement?.textContent?.trim() ?: "The component"
-                        if (clickedCompName.startsWithUppercaseLetter()) {
-                            window.alert("$clickedCompName is either from Android SDK or from external dependencies")
+                        val errorMessage = activeElement?.getAttribute("sp-error")
+                        if (errorMessage != null) {
+                            window.alert(errorMessage)
                         } else {
-                            // Navigating to method definition
-                            window.alert("Navigating to/with method definition will be available in up coming versions...")
+                            val clickedCompName = activeElement?.textContent?.trim() ?: "The component"
+                            if (clickedCompName.startsWithUppercaseLetter()) {
+                                window.alert("$clickedCompName is either from Android SDK or from external dependencies")
+                            } else {
+                                // Navigating to method definition
+                                window.alert("Navigating to/with method definition will be available in up coming versions...")
+                            }
                         }
                     }
                 }
