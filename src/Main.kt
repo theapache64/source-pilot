@@ -11,6 +11,7 @@ import kotlin.browser.window
 var isControlActive = false;
 var activeElement: HTMLSpanElement? = null
 var resLink: String? = null
+var isNewTab: Boolean? = null
 var support: LanguageSupport? = null
 var prevUrl = window.location.toString()
 
@@ -70,7 +71,11 @@ private fun activateSourcePilot() {
             node.onclick = {
                 if (isControlActive) {
                     if (resLink != null) {
-                        window.open(resLink!!, "_blank")
+                        if (isNewTab != null && isNewTab == true) {
+                            window.open(resLink!!, "_blank")
+                        } else {
+                            window.location.assign(resLink.toString())
+                        }
                     } else {
                         val clickedCompName = activeElement?.textContent?.trim() ?: "The component"
                         if (clickedCompName.startsWithUppercaseLetter()) {
@@ -113,14 +118,16 @@ private fun activateSourcePilot() {
 
 fun checkIsClickable(inputText: String) {
     println("Checking if $inputText is clickable ")
-    support?.getNewResourceUrl(inputText, activeElement!!) { newUrl ->
+    support?.getNewResourceUrl(inputText, activeElement!!) { newUrl, newTab ->
         if (newUrl != null) {
             resLink = newUrl
+            isNewTab = newTab
             activeElement?.style?.textDecoration = "underline"
             doubleCheckUrl(newUrl)
         } else {
             println("New url is null, so it's not clickable :(")
             resLink = null
+            isNewTab = null
             removeUnderlineFromActiveElement()
         }
     }

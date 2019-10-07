@@ -23,7 +23,8 @@ object KotlinParser {
     }
 
     fun isInternalMethodCall(inputText: String): Boolean {
-        return INTERNAL_METHOD_CALL_PATTERN.matches(inputText)
+        val matches = INTERNAL_METHOD_CALL_PATTERN.find(inputText)
+        return matches != null
     }
 
     fun parseInternalMethodName(inputText: String): String {

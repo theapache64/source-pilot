@@ -11,7 +11,7 @@ import kotlin.browser.window
  */
 class AndroidXMLSupport : LanguageSupport() {
 
-    override fun getNewResourceUrl(inputText: String, htmlSpanElement: HTMLSpanElement, callback: (String?) -> Unit) {
+    override fun getNewResourceUrl(inputText: String, htmlSpanElement: HTMLSpanElement, callback: (url: String?, isNewTab: Boolean) -> Unit) {
         val currentUrl = window.location.toString()
 
         val fileName = when {
@@ -32,21 +32,21 @@ class AndroidXMLSupport : LanguageSupport() {
 
         if (fileName != null) {
             val fileUrl = "${currentUrl.split("main")[0]}main/res/$fileName"
-            callback(fileUrl)
+            callback(fileUrl, true)
             // Getting line number
             val valueName = CommonParser.parseValueName(inputText)
             if (valueName != null && hasLineNumber(inputText)) {
                 println("Getting line number..,.")
                 XMLLineFinder.getLineNumber(fileUrl, valueName) { lineNumber ->
                     if (lineNumber > 0) {
-                        callback("$fileUrl#L$lineNumber")
+                        callback("$fileUrl#L$lineNumber", true)
                     } else {
-                        callback(null)
+                        callback(null, false)
                     }
                 }
             }
         } else {
-            callback(null)
+            callback(null, false)
         }
     }
 
