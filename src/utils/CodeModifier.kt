@@ -97,32 +97,7 @@ object CodeModifier {
             }
 
             td.innerHTML = sb.toString()
-
         }
-
-
-        /*val allSpans = document.querySelectorAll("table.highlight tbody tr td.blob-code > span")
-        allSpans.asList().forEach { _span ->
-            val span = _span as HTMLSpanElement
-            val spanClass = span.className
-            span.textContent?.let { spanText ->
-                if (spanText.contains(".")) {
-                    val dotSplit = spanText.split(".")
-                    val spanParent = span.parentElement as HTMLElement
-                    for (dot in dotSplit.withIndex()) {
-                        val newSpan = document.createElement("span")
-                        newSpan.addClass(spanClass)
-                        newSpan.textContent = if (dot.index == dotSplit.size - 1) {
-                            dot.value
-                        } else {
-                            "${dot.value}."
-                        }
-                        spanParent.prepend(newSpan)
-                    }
-                }
-            }
-
-        }*/
     }
 
 }
