@@ -57,46 +57,43 @@ open class KotlinSupport : LanguageSupport() {
 
     override fun getNewResourceUrl(inputText: String, htmlSpanElement: HTMLSpanElement, callback: (url: String?, isNewTab: Boolean) -> Unit) {
 
-
         if (!isKotlinDataType(inputText)) {
-            if (inputText.startsWith(LAYOUT_PREFIX)) {
-                println("Generating new url for layout : $inputText")
+
+            if (isLayoutName(htmlSpanElement)) {
                 val layoutFileName = CommonParser.parseLayoutFileName(inputText)
                 val currentUrl = window.location.toString()
                 callback("${currentUrl.split("main")[0]}main/res/layout/$layoutFileName.xml", true)
-            } else if (inputText.startsWith(STRING_PREFIX)) {
+            } else if (isStringRes(htmlSpanElement)) {
                 val stringResName = KotlinParser.getStringResName(inputText)
+                println("StringRes is $stringResName")
                 val currentUrl = window.location.toString()
                 val stringXml = "${currentUrl.split("main")[0]}main/res/values/strings.xml"
                 callback(stringXml, true)
                 XMLLineFinder.getLineNumber(stringXml, stringResName) { lineNumber ->
                     callback("$stringXml#L$lineNumber", true)
                 }
-            } else if (inputText.startsWith(MENU_PREFIX)) {
+            } else if (isMenuRes(htmlSpanElement)) {
                 println("Generating new url for menu : $inputText")
                 val menuFileName = CommonParser.parseMenuFileName(inputText)
                 val currentUrl = window.location.toString()
                 callback("${currentUrl.split("main")[0]}main/res/menu/$menuFileName.xml", true)
-            } else if (KotlinParser.isInternalMethodCall(inputText)) {
+            } else if (isImportStatement(htmlSpanElement)) {
+                println("It's an import statement")
+                val currentPackageName = KotlinParser.getCurrentPackageName(getFullCode())
+                val importStatement = htmlSpanElement.parentElement?.textContent!!
+                val importPackage = KotlinParser.parseImportPackage(importStatement)
+                gotoImport(currentPackageName, importPackage, callback)
+            } else if (isInternalMethodCall(htmlSpanElement)) {
 
                 println("Internal method call..")
 
                 // internal method call
-                val methodName = KotlinParser.parseInternalMethodName(inputText)
+                val methodName = inputText.trim()
                 val lineNumbers = getMethodDefinitionLineNumber(methodName)
                 if (lineNumbers.isNotEmpty()) {
                     if (lineNumbers.size == 1) {
                         val lineNumber = lineNumbers.first()
-                        if (lineNumber > 0) {
-                            var currentUrl = window.location.toString()
-                            if (CommonParser.hasLineNumber(currentUrl)) {
-                                currentUrl = CommonParser.parseUrlOnly(currentUrl)
-                            }
-
-                            callback("$currentUrl#L$lineNumber", false)
-                        } else {
-                            callback(null, false)
-                        }
+                        goto(lineNumber, callback)
                     } else {
                         // multiple method definitions
                         callback(null, false)
@@ -106,9 +103,8 @@ open class KotlinSupport : LanguageSupport() {
                 } else {
                     callback(null, false)
                 }
-            } else if (KotlinParser.isExternalMethodCall(inputText)) {
-                println("External method call found")
-
+            } else if (KotlinParser.isExternalMethodCall(inputText, htmlSpanElement)) {
+                println("$inputText is an external method call")
             } else if (imports.isNotEmpty()) {
 
                 val currentPackageName = KotlinParser.getCurrentPackageName(getFullCode())
@@ -116,17 +112,20 @@ open class KotlinSupport : LanguageSupport() {
                 // Getting possible import statements for the class
                 val matchingImport = getMatchingImport(inputText, currentPackageName, htmlSpanElement)
 
-                if (isClickableImport(matchingImport)) {
-                    val currentUrl = window.location.toString()
-                    val curFileExt = CommonParser.parseFileExt(currentUrl)
-                    val packageSlash = '/' + currentPackageName.replace('.', '/');
-                    val windowLocSplit = currentUrl.split(packageSlash)
+                when {
 
-                    // Returning new url
-                    callback("${windowLocSplit[0]}/${matchingImport!!.replace('.', '/')}.$curFileExt#L1", true)
-                } else {
-                    println("No import matched! Matching importing was : $matchingImport")
-                    callback(null, true)
+                    isInnerInterfaceOrClass(inputText) -> {
+                        val lineNumber = getLineNumber(inputText)
+                        goto(lineNumber, callback)
+                    }
+
+                    isClickableImport(matchingImport) -> {
+                        gotoImport(currentPackageName, matchingImport, callback)
+                    }
+                    else -> {
+                        println("No import matched! Matching importing was : $matchingImport")
+                        callback(null, true)
+                    }
                 }
             } else {
                 println("No match found")
@@ -136,6 +135,77 @@ open class KotlinSupport : LanguageSupport() {
             println("It was a kotlin data type")
             callback(null, true)
         }
+    }
+
+    private fun gotoImport(currentPackageName: String, matchingImport: String?, callback: (url: String?, isNewTab: Boolean) -> Unit) {
+        val currentUrl = window.location.toString()
+        val curFileExt = CommonParser.parseFileExt(currentUrl)
+        val packageSlash = '/' + currentPackageName.replace('.', '/');
+        val windowLocSplit = currentUrl.split(packageSlash)
+
+        // Returning new url
+        callback("${windowLocSplit[0]}/${matchingImport!!.replace('.', '/')}.$curFileExt#L1", true)
+    }
+
+    private fun isImportStatement(htmlSpanElement: HTMLSpanElement): Boolean {
+        val fullLine = htmlSpanElement.parentElement?.textContent
+        println("Full line is $fullLine")
+        return fullLine?.matches(KotlinParser.IMPORT_PATTERN) ?: false
+    }
+
+    private fun goto(lineNumber: Int, callback: (url: String?, isNewTab: Boolean) -> Unit) {
+        if (lineNumber > 0) {
+            var currentUrl = window.location.toString()
+            if (CommonParser.hasLineNumber(currentUrl)) {
+                currentUrl = CommonParser.parseUrlOnly(currentUrl)
+            }
+
+            callback("$currentUrl#L$lineNumber", false)
+        } else {
+            callback(null, false)
+        }
+    }
+
+    private fun isInnerInterfaceOrClass(inputText: String): Boolean {
+        val fullCode = getFullCode()
+        return fullCode.matches(getContentRegEx(inputText))
+    }
+
+    private fun isInternalMethodCall(htmlSpanElement: HTMLSpanElement): Boolean {
+        return htmlSpanElement.nextElementSibling?.textContent?.startsWith("(") ?: false
+                && htmlSpanElement.className != "pl-en"
+                && htmlSpanElement.previousElementSibling?.textContent?.isBlank() ?: true
+    }
+
+    private fun isMenuRes(htmlSpanElement: HTMLSpanElement): Boolean {
+        return htmlSpanElement.previousElementSibling?.textContent.equals(".menu")
+    }
+
+    private fun isStringRes(htmlSpanElement: HTMLSpanElement): Boolean {
+        return htmlSpanElement.previousElementSibling?.textContent.equals(".string")
+    }
+
+    private fun isLayoutName(htmlSpanElement: HTMLSpanElement): Boolean {
+        return htmlSpanElement.previousElementSibling?.textContent.equals(".layout")
+    }
+
+    private fun getSupportableElementFromReverse(_htmlSpanElement: HTMLSpanElement): List<String> {
+        val arr = mutableListOf<String>()
+        var endNode = _htmlSpanElement as Element?
+        while (endNode != null) {
+            arr.add(endNode.textContent!!)
+            endNode = endNode.previousElementSibling
+        }
+
+        val x = mutableListOf<String>()
+        for (arrElement in arr.withIndex()) {
+            val subList = arr.subList(0, arrElement.index).reversed()
+            val newElement = subList.joinToString(separator = "")
+            if (newElement.isNotBlank()) {
+                x.add(newElement)
+            }
+        }
+        return x
     }
 
     private fun getMethodDefinitionLineNumber(methodName: String): List<Int> {
@@ -154,6 +224,27 @@ open class KotlinSupport : LanguageSupport() {
             }
         }
         return lineNumbers
+    }
+
+    private fun getLineNumber(lineContent: String): Int {
+        val lineNumbers = mutableListOf<Int>()
+        val tdBlobCodes = document.querySelectorAll("table.highlight tbody tr td.blob-code")
+        for (tdIndex in 0 until tdBlobCodes.length) {
+            val td = tdBlobCodes[tdIndex] as Element
+            val codeLine = td.textContent
+            if (codeLine != null && codeLine.trim().isNotEmpty()) {
+                val regex = getContentRegEx(lineContent)
+                val isMatch = codeLine.matches(regex)
+                if (isMatch) {
+                    return td.id.replace("LC", "").toInt()
+                }
+            }
+        }
+        return -1
+    }
+
+    private fun getContentRegEx(inputText: String): String {
+        return "(?:interface|class)\\s*$inputText\\s*[{(]"
     }
 
     private fun getMethodRegEx(methodName: String): String {
@@ -194,7 +285,6 @@ open class KotlinSupport : LanguageSupport() {
     override fun getFileExtension(): String {
         return "kt"
     }
-
 
 
 }

@@ -60,7 +60,14 @@ object CodeModifier {
     }
 
     fun splitDotSpanned() {
+        splitSpannedBy(".")
+    }
 
+    fun splitCommaSpanned() {
+        splitSpannedBy(",")
+    }
+
+    private fun splitSpannedBy(splitBy: String) {
         val tdBlobCodes = document.querySelectorAll("table.highlight tbody tr td.blob-code")
         tdBlobCodes.asList().forEach { _td ->
             val td = _td as HTMLElement
@@ -69,35 +76,48 @@ object CodeModifier {
                 if (childNode is HTMLSpanElement) {
                     val spanContent = childNode.textContent
                     if (spanContent != null) {
-                        if (spanContent.contains(".")) {
 
-                            val dotSplit = spanContent.split(".")
+                        if (spanContent.contains(splitBy)) {
+
+                            val dotSplit = spanContent.split(splitBy)
 
                             for (dot in dotSplit.withIndex()) {
                                 val newSpanContent = if (dot.index == 0) {
                                     dot.value
                                 } else {
-                                    ".${dot.value}"
+                                    "$splitBy${dot.value}"
                                 }
 
-                                val newSpan = "<span class=\"${childNode.className}\">$newSpanContent</span>"
-                                sb.append(newSpan)
+                                if (newSpanContent.isNotEmpty()) {
+                                    val newSpan = "<span class=\"${childNode.className}\">$newSpanContent</span>"
+                                    sb.append(newSpan)
+                                }
                             }
 
                         } else {
-                            sb.append(childNode.outerHTML)
+                            if (childNode.innerText.isNotEmpty()) {
+                                sb.append(childNode.outerHTML)
+                            }
                         }
                     } else {
-                        sb.append(childNode.outerHTML)
+                        if (childNode.innerText.isNotEmpty()) {
+                            sb.append(childNode.outerHTML)
+                        }
                     }
                 } else {
                     println("Not span")
-                    sb.append(childNode.textContent)
+                    if (childNode.textContent?.isNotEmpty() == true) {
+                        sb.append(childNode.textContent)
+                    }
                 }
             }
 
             td.innerHTML = sb.toString()
         }
+    }
+
+    fun splitOpenBraSpanner() {
+        splitSpannedBy("(")
     }
 
 }

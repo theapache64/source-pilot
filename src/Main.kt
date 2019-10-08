@@ -51,6 +51,8 @@ private fun activateSourcePilot() {
         println("Found code table ")
         CodeModifier.spanNonSpanned()
         CodeModifier.splitDotSpanned()
+        CodeModifier.splitCommaSpanned()
+        CodeModifier.splitOpenBraSpanner()
 
         // Element Mouse Over ib
         val allCodeSpan = document.querySelectorAll("table.highlight tbody tr td.blob-code > span")
