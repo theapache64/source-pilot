@@ -78,11 +78,24 @@ open class KotlinSupport : LanguageSupport() {
                 val currentUrl = window.location.toString()
                 callback("${currentUrl.split("main")[0]}main/res/menu/$menuFileName.xml", true)
             } else if (isImportStatement(htmlSpanElement)) {
-                println("It's an import statement")
-                val currentPackageName = KotlinParser.getCurrentPackageName(getFullCode())
-                val importStatement = htmlSpanElement.parentElement?.textContent!!
-                val importPackage = KotlinParser.parseImportPackage(importStatement)
-                gotoImport(currentPackageName, importPackage, callback)
+                println("Clicked on an import statement")
+
+                if (isClickedOnEndClass(htmlSpanElement)) {
+                    println("Clicked on end class")
+                    val currentPackageName = KotlinParser.getCurrentPackageName(getFullCode())
+                    val importStatement = htmlSpanElement.parentElement?.textContent!!
+                    val importPackage = KotlinParser.parseImportPackage(importStatement)
+                    if (isClickableImport(importPackage)) {
+                        gotoImport(currentPackageName, importPackage, callback)
+                    } else {
+                        println("not clickable import $importPackage")
+                        callback(null, false)
+                    }
+                } else {
+                    // directory navigation
+                    val directoryPackage = getDirectoryPackage(htmlSpanElement)
+                    println("Directory package : $directoryPackage")
+                }
             } else if (isInternalMethodCall(htmlSpanElement)) {
 
                 println("Internal method call..")
@@ -135,6 +148,24 @@ open class KotlinSupport : LanguageSupport() {
             println("It was a kotlin data type")
             callback(null, true)
         }
+    }
+
+    private fun getDirectoryPackage(htmlSpanElement: HTMLSpanElement): String {
+        var s = ""
+        var x: Element? = htmlSpanElement as Element
+        while (x != null) {
+            val text = x.textContent
+            if (text != null && text.trim() != "import") {
+                s = "$text$s"
+            }
+            println("Looping...")
+            x = htmlSpanElement.previousElementSibling
+        }
+        return s
+    }
+
+    private fun isClickedOnEndClass(htmlSpanElement: HTMLSpanElement): Boolean {
+        return htmlSpanElement.nextElementSibling == null
     }
 
     private fun gotoImport(currentPackageName: String, matchingImport: String?, callback: (url: String?, isNewTab: Boolean) -> Unit) {
