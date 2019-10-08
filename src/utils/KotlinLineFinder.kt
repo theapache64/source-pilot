@@ -2,7 +2,7 @@ package utils
 
 import org.w3c.xhr.XMLHttpRequest
 
-object XMLLineFinder {
+object KotlinLineFinder {
 
     /**
      * To get line number

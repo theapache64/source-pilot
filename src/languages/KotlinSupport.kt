@@ -89,35 +89,31 @@ open class KotlinSupport : LanguageSupport() {
                     callback(null, false)
                 }
             } else if (isVariable(htmlSpanElement)) {
-                println("Yes, It's a variable")
                 val assignLineNumber = getAssignedLineNumber(inputText)
-                println("Line number is $assignLineNumber")
                 goto(assignLineNumber, callback)
             } else if (KotlinParser.isExternalMethodCall(inputText, htmlSpanElement)) {
                 println("$inputText is an external method call")
-            } else if (imports.isNotEmpty()) {
+                val variableName = getVariableName(htmlSpanElement)
+                println("Variable name is $variableName")
+                if (variableName != null) {
+                    val variableType = getVariableType(variableName)
+                    if (isClassName(variableType)) {
+                        println("Class name is $variableType")
+                        gotoClass(variableType!!, htmlSpanElement, callback)
 
-                val currentPackageName = KotlinParser.getCurrentPackageName(getFullCode())
+                        // Getting line number
+                        // TODO : Get line number here
+                        getLineNumber(getFunRegEx(inputText.replace(".", "").trim()))
 
-                // Getting possible import statements for the class
-                val matchingImport = getMatchingImport(inputText, currentPackageName, htmlSpanElement)
-
-                when {
-
-                    isInnerInterfaceOrClass(inputText) -> {
-                        val lineNumber = getLineNumber(inputText)
-                        goto(lineNumber, callback)
+                    } else {
+                        println("Non class variable types, such as method calls will supported in future")
+                        callback(null, false)
                     }
-
-                    isClickableImport(matchingImport) -> {
-                        gotoImport(currentPackageName, matchingImport, false, callback)
-                    }
-
-                    else -> {
-                        println("No import matched! Matching importing was : $matchingImport")
-                        callback(null, true)
-                    }
+                } else {
+                    callback(null, false)
                 }
+            } else if (imports.isNotEmpty()) {
+                gotoClass(inputText, htmlSpanElement, callback)
             } else {
                 println("No match found")
                 callback(null, true)
@@ -125,6 +121,39 @@ open class KotlinSupport : LanguageSupport() {
         } else {
             println("It was a kotlin data type")
             callback(null, true)
+        }
+    }
+
+    private fun getFunRegEx(methodName: String): String {
+        return "fun\\s+$methodName\\s*\\("
+    }
+
+    private fun getVariableName(htmlSpanElement: HTMLSpanElement): String? {
+        return getPreviousNonSpaceSiblingElement(htmlSpanElement)?.textContent
+    }
+
+    private fun gotoClass(inputText: String, htmlSpanElement: HTMLSpanElement, callback: (url: String?, isNewTab: Boolean) -> Unit) {
+
+        val currentPackageName = KotlinParser.getCurrentPackageName(getFullCode())
+
+        // Getting possible import statements for the class
+        val matchingImport = getMatchingImport(inputText, currentPackageName, htmlSpanElement)
+
+        when {
+
+            isInnerInterfaceOrClass(inputText) -> {
+                val lineNumber = getLineNumber(getContentRegEx(inputText))
+                goto(lineNumber, callback)
+            }
+
+            isClickableImport(matchingImport) -> {
+                gotoImport(currentPackageName, matchingImport, false, callback)
+            }
+
+            else -> {
+                println("No import matched! Matching importing was : $matchingImport")
+                callback(null, true)
+            }
         }
     }
 
@@ -140,6 +169,17 @@ open class KotlinSupport : LanguageSupport() {
                 return x
             }
             x = x.nextElementSibling
+        }
+        return null
+    }
+
+    private fun getPreviousNonSpaceSiblingElement(htmlSpanElement: HTMLElement): Element? {
+        var x = htmlSpanElement.previousElementSibling
+        while (x != null) {
+            if (x.textContent?.isNotBlank() == true) {
+                return x
+            }
+            x = x.previousElementSibling
         }
         return null
     }
@@ -167,8 +207,8 @@ open class KotlinSupport : LanguageSupport() {
         return assignedFrom.matches("(?<variableName>\\w+)\\s*.\\s*(?<methodName>\\w+)")
     }
 
-    private fun isClassName(assignedFrom: String): Boolean {
-        return assignedFrom.matches("\\w+")
+    private fun isClassName(assignedFrom: String?): Boolean {
+        return assignedFrom?.matches("\\w+") ?: false
     }
 
     /**
@@ -221,7 +261,7 @@ open class KotlinSupport : LanguageSupport() {
         return htmlSpanElement.nextElementSibling == null
     }
 
-    private fun gotoImport(currentPackageName: String, matchingImport: String?, isDir: Boolean, callback: (url: String?, isNewTab: Boolean) -> Unit) {
+    private fun gotoImport(currentPackageName: String, matchingImport: String?, isDir: Boolean, callback: (url: String?, isNewTab: Boolean) -> Unit, lineNumber: Int = 1) {
         val currentUrl = window.location.toString()
         val curFileExt = CommonParser.parseFileExt(currentUrl)
         val packageSlash = '/' + currentPackageName.replace('.', '/');
@@ -229,7 +269,7 @@ open class KotlinSupport : LanguageSupport() {
         val fileExt = if (isDir) {
             ""
         } else {
-            ".$curFileExt#L1"
+            ".$curFileExt#L$lineNumber"
         }
         // Returning new url
         callback("${windowLocSplit[0]}/${matchingImport!!.replace('.', '/')}$fileExt", true)
@@ -314,14 +354,12 @@ open class KotlinSupport : LanguageSupport() {
         return lineNumbers
     }
 
-    private fun getLineNumber(lineContent: String): Int {
-        val lineNumbers = mutableListOf<Int>()
+    private fun getLineNumber(regex: String): Int {
         val tdBlobCodes = document.querySelectorAll("table.highlight tbody tr td.blob-code")
         for (tdIndex in 0 until tdBlobCodes.length) {
             val td = tdBlobCodes[tdIndex] as Element
             val codeLine = td.textContent
             if (codeLine != null && codeLine.trim().isNotEmpty()) {
-                val regex = getContentRegEx(lineContent)
                 val isMatch = codeLine.matches(regex)
                 if (isMatch) {
                     return td.id.replace("LC", "").toInt()
