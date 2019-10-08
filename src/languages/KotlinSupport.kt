@@ -2,9 +2,7 @@ package languages
 
 import base.LanguageSupport
 import extensions.startsWithUppercaseLetter
-import org.w3c.dom.Element
-import org.w3c.dom.HTMLSpanElement
-import org.w3c.dom.get
+import org.w3c.dom.*
 import utils.CommonParser
 import utils.KotlinParser
 import utils.XMLLineFinder
@@ -20,40 +18,10 @@ open class KotlinSupport : LanguageSupport() {
         protected const val MENU_PREFIX = ".menu."
     }
 
-    private val imports by lazy { KotlinParser.parseImports(getFullCode()) }
-
     /**
-     * To get matching import for the input passed from the imports in the file.
+     * To hold imports in current kotlin file
      */
-    private fun getMatchingImport(_inputText: String, currentPackageName: String, htmlSpanElement: HTMLSpanElement): String? {
-
-        // Removing '?' from inputText. For eg: Bundle? -> Bundle
-        val inputText = _inputText.replace("?", "")
-
-        val matchingImports = imports.filter { it.endsWith(".$inputText") }
-        println("Matching imports are : $matchingImports")
-        return if (matchingImports.isNotEmpty()) {
-            matchingImports.first()
-        } else {
-            println("No import matched for $inputText, setting current name : $currentPackageName")
-            if (inputText.startsWithUppercaseLetter()) {
-                "$currentPackageName.$inputText"
-            } else {
-                // Checking if it's the import statement it self
-                println("Checking if it's import statement")
-                val isImportStatement = htmlSpanElement.parentElement?.textContent.equals(getImportStatement(inputText))
-                if (isImportStatement) {
-                    inputText
-                } else {
-                    null
-                }
-            }
-        }
-    }
-
-    protected open fun getImportStatement(importStatement: String): String {
-        return "import $importStatement"
-    }
+    private val imports by lazy { KotlinParser.parseImports(getFullCode()) }
 
 
     override fun getNewResourceUrl(inputText: String, htmlSpanElement: HTMLSpanElement, callback: (url: String?, isNewTab: Boolean) -> Unit) {
@@ -120,6 +88,11 @@ open class KotlinSupport : LanguageSupport() {
                 } else {
                     callback(null, false)
                 }
+            } else if (isVariable(htmlSpanElement)) {
+                println("Yes, It's a variable")
+                val assignLineNumber = getAssignedLineNumber(inputText)
+                println("Line number is $assignLineNumber")
+                goto(assignLineNumber, callback)
             } else if (KotlinParser.isExternalMethodCall(inputText, htmlSpanElement)) {
                 println("$inputText is an external method call")
             } else if (imports.isNotEmpty()) {
@@ -153,6 +126,82 @@ open class KotlinSupport : LanguageSupport() {
             println("It was a kotlin data type")
             callback(null, true)
         }
+    }
+
+    private fun isVariable(htmlSpanElement: HTMLSpanElement): Boolean {
+        return htmlSpanElement.textContent?.matches("\\w+") ?: false
+                && getNextNonSpaceSiblingElement(htmlSpanElement)?.textContent?.startsWith(".") ?: false
+    }
+
+    private fun getNextNonSpaceSiblingElement(htmlSpanElement: HTMLElement): Element? {
+        var x = htmlSpanElement.nextElementSibling
+        while (x != null) {
+            if (x.textContent?.isNotBlank() == true) {
+                return x
+            }
+            x = x.nextElementSibling
+        }
+        return null
+    }
+
+    private fun getAssignedLineNumber(variableName: String?): Int {
+        val allTd = document.querySelectorAll("table.highlight tbody tr td.blob-code")
+        val matchRegEx = KotlinParser.getAssignedPattern(variableName)
+        println("RegEx is $matchRegEx")
+        for (i in 0 until allTd.length) {
+            val td = allTd[i] as Element
+            val line = td.textContent
+            println("Line is $line")
+            if (line != null && line.matches(matchRegEx)) {
+                return td.id.replace("LC", "").toInt()
+            }
+        }
+        return -1
+    }
+
+    private fun getVariableType(variableName: String?): String? {
+        return KotlinParser.getAssignedFrom(getFullCode(), variableName)
+    }
+
+    private fun isAssignedViaMethod(assignedFrom: String): Boolean {
+        return assignedFrom.matches("(?<variableName>\\w+)\\s*.\\s*(?<methodName>\\w+)")
+    }
+
+    private fun isClassName(assignedFrom: String): Boolean {
+        return assignedFrom.matches("\\w+")
+    }
+
+    /**
+     * To get matching import for the input passed from the imports in the file.
+     */
+    private fun getMatchingImport(_inputText: String, currentPackageName: String, htmlSpanElement: HTMLSpanElement): String? {
+
+        // Removing '?' from inputText. For eg: Bundle? -> Bundle
+        val inputText = _inputText.replace("?", "")
+
+        val matchingImports = imports.filter { it.endsWith(".$inputText") }
+        println("Matching imports are : $matchingImports")
+        return if (matchingImports.isNotEmpty()) {
+            matchingImports.first()
+        } else {
+            println("No import matched for $inputText, setting current name : $currentPackageName")
+            if (inputText.startsWithUppercaseLetter()) {
+                "$currentPackageName.$inputText"
+            } else {
+                // Checking if it's the import statement it self
+                println("Checking if it's import statement")
+                val isImportStatement = htmlSpanElement.parentElement?.textContent.equals(getImportStatement(inputText))
+                if (isImportStatement) {
+                    inputText
+                } else {
+                    null
+                }
+            }
+        }
+    }
+
+    protected open fun getImportStatement(importStatement: String): String {
+        return "import $importStatement"
     }
 
     private fun getDirectoryPackage(htmlSpanElement: HTMLSpanElement): String {
@@ -291,8 +340,7 @@ open class KotlinSupport : LanguageSupport() {
     }
 
     private fun isKotlinDataType(_inputText: String): Boolean {
-        val inputText = _inputText.replace("?", "")
-        return when (inputText) {
+        return when (_inputText.replace("?", "")) {
             "Boolean",
             "Long",
             "Float",

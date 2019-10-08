@@ -11,6 +11,7 @@ object KotlinParser {
     private val STRING_PATTERN = "\\.(.\\w+)\\)".toRegex()
     private val INTERNAL_METHOD_CALL_PATTERN = "^\\s*(?<methodName>\\w+)\\(".toRegex()
     private val VARIABLE_METHOD_CALL_PATTERN = "\\.\\s*\\w+\\s*".toRegex()
+    private val ASSIGNED_FROM_PATTERN = "\\s*(?::|=)\\s*(?<assignedFrom>[\\w\\.\\(\\)]+)"
 
     fun parseImports(fullCode: String): List<String> {
         return IMPORT_PATTERN.findAll(fullCode).map { it.groups[1]?.value!! }.toList()
@@ -51,5 +52,13 @@ object KotlinParser {
 
     fun parseImportPackage(importStatement: String): String? {
         return IMPORT_PATTERN.find(importStatement)!!.groups[1]!!.value
+    }
+
+    fun getAssignedFrom(fullCode: String, variableName: String?): String? {
+        return getAssignedPattern(variableName).toRegex().findAll(fullCode).first().groups[1]?.value
+    }
+
+    fun getAssignedPattern(variableName: String?): String {
+        return "$variableName$ASSIGNED_FROM_PATTERN"
     }
 }
