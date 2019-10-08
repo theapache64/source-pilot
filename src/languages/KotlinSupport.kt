@@ -27,8 +27,9 @@ open class KotlinSupport : LanguageSupport() {
      */
     private fun getMatchingImport(_inputText: String, currentPackageName: String, htmlSpanElement: HTMLSpanElement): String? {
 
-        // Removing question mark (optional-kotlin)
+        // Removing '?' from inputText. For eg: Bundle? -> Bundle
         val inputText = _inputText.replace("?", "")
+
         val matchingImports = imports.filter { it.endsWith(".$inputText") }
         println("Matching imports are : $matchingImports")
         return if (matchingImports.isNotEmpty()) {
@@ -80,22 +81,25 @@ open class KotlinSupport : LanguageSupport() {
             } else if (isImportStatement(htmlSpanElement)) {
                 println("Clicked on an import statement")
 
-                if (isClickedOnEndClass(htmlSpanElement)) {
-                    println("Clicked on end class")
-                    val currentPackageName = KotlinParser.getCurrentPackageName(getFullCode())
-                    val importStatement = htmlSpanElement.parentElement?.textContent!!
-                    val importPackage = KotlinParser.parseImportPackage(importStatement)
-                    if (isClickableImport(importPackage)) {
-                        gotoImport(currentPackageName, importPackage, callback)
-                    } else {
-                        println("not clickable import $importPackage")
-                        callback(null, false)
-                    }
+                val currentPackageName = KotlinParser.getCurrentPackageName(getFullCode())
+                val importStatement = htmlSpanElement.parentElement?.textContent!!
+
+                val isDir: Boolean
+                val importPackage = if (isClickedOnEndClass(htmlSpanElement)) {
+                    isDir = false
+                    KotlinParser.parseImportPackage(importStatement)
                 } else {
                     // directory navigation
-                    val directoryPackage = getDirectoryPackage(htmlSpanElement)
-                    println("Directory package : $directoryPackage")
+                    isDir = true
+                    getDirectoryPackage(htmlSpanElement).trim()
                 }
+
+                if (isClickableImport(importPackage)) {
+                    gotoImport(currentPackageName, importPackage, isDir, callback)
+                } else {
+                    callback(null, false)
+                }
+
             } else if (isInternalMethodCall(htmlSpanElement)) {
 
                 println("Internal method call..")
@@ -133,8 +137,9 @@ open class KotlinSupport : LanguageSupport() {
                     }
 
                     isClickableImport(matchingImport) -> {
-                        gotoImport(currentPackageName, matchingImport, callback)
+                        gotoImport(currentPackageName, matchingImport, false, callback)
                     }
+
                     else -> {
                         println("No import matched! Matching importing was : $matchingImport")
                         callback(null, true)
@@ -152,14 +157,13 @@ open class KotlinSupport : LanguageSupport() {
 
     private fun getDirectoryPackage(htmlSpanElement: HTMLSpanElement): String {
         var s = ""
-        var x: Element? = htmlSpanElement as Element
+        var x: Element? = htmlSpanElement
         while (x != null) {
             val text = x.textContent
             if (text != null && text.trim() != "import") {
                 s = "$text$s"
             }
-            println("Looping...")
-            x = htmlSpanElement.previousElementSibling
+            x = x.previousElementSibling
         }
         return s
     }
@@ -168,14 +172,18 @@ open class KotlinSupport : LanguageSupport() {
         return htmlSpanElement.nextElementSibling == null
     }
 
-    private fun gotoImport(currentPackageName: String, matchingImport: String?, callback: (url: String?, isNewTab: Boolean) -> Unit) {
+    private fun gotoImport(currentPackageName: String, matchingImport: String?, isDir: Boolean, callback: (url: String?, isNewTab: Boolean) -> Unit) {
         val currentUrl = window.location.toString()
         val curFileExt = CommonParser.parseFileExt(currentUrl)
         val packageSlash = '/' + currentPackageName.replace('.', '/');
         val windowLocSplit = currentUrl.split(packageSlash)
-
+        val fileExt = if (isDir) {
+            ""
+        } else {
+            ".$curFileExt#L1"
+        }
         // Returning new url
-        callback("${windowLocSplit[0]}/${matchingImport!!.replace('.', '/')}.$curFileExt#L1", true)
+        callback("${windowLocSplit[0]}/${matchingImport!!.replace('.', '/')}$fileExt", true)
     }
 
     private fun isImportStatement(htmlSpanElement: HTMLSpanElement): Boolean {
