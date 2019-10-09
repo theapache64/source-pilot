@@ -7,24 +7,23 @@ object KotlinLineFinder {
     /**
      * To get line number
      */
-    fun getLineNumber(fileUrl: String, valueName: String, callback: (Int) -> Unit) {
-        val rawUrl = fileUrl.replace("https://github.com", "https://raw.githubusercontent.com").replaceFirst("/blob", "")
+    fun getLineNumber(fileUrl: String, regEx: String, callback: (Int) -> Unit) {
+        val rawUrl = GitHubUtils.toRAWUrl(fileUrl)
         val xhr = XMLHttpRequest()
         xhr.open("GET", rawUrl)
         xhr.onreadystatechange = {
             if (xhr.readyState.toInt() == 4 && xhr.status.toInt() == 200) {
-                val lineNumber = getLineNumber(xhr.responseText, valueName)
+                val lineNumber = getLineNumber(xhr.responseText, regEx)
                 callback(lineNumber)
             }
         };
         xhr.send()
     }
 
-    private fun getLineNumber(fileData: String, value: String): Int {
-        println("Searching for $value")
+    private fun getLineNumber(fileData: String, regEx: String): Int {
         val lines = fileData.split("\n")
         lines.forEachIndexed { index, line ->
-            if (line.contains("\"$value\"")) {
+            if (line.matches(regEx)) {
                 return index + 1
             }
         }

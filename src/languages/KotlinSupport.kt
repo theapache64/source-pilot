@@ -4,6 +4,7 @@ import base.LanguageSupport
 import extensions.startsWithUppercaseLetter
 import org.w3c.dom.*
 import utils.CommonParser
+import utils.KotlinLineFinder
 import utils.KotlinParser
 import utils.XMLLineFinder
 import kotlin.browser.document
@@ -18,6 +19,7 @@ open class KotlinSupport : LanguageSupport() {
         protected const val MENU_PREFIX = ".menu."
     }
 
+    private var fileUrl: String? = null
     /**
      * To hold imports in current kotlin file
      */
@@ -102,9 +104,13 @@ open class KotlinSupport : LanguageSupport() {
                         gotoClass(variableType!!, htmlSpanElement, callback)
 
                         // Getting line number
-                        // TODO : Get line number here
-                        getLineNumber(getFunRegEx(inputText.replace(".", "").trim()))
-
+                        // TODO : Get line number heres
+                        if (fileUrl != null) {
+                            KotlinLineFinder.getLineNumber(fileUrl!!, getFunRegEx(inputText.replace(".", ""))) { lineNumber ->
+                                val newUrl = "${fileUrl!!.replace("#L.+".toRegex(), "")}#L$lineNumber"
+                                callback(newUrl, true)
+                            }
+                        }
                     } else {
                         println("Non class variable types, such as method calls will supported in future")
                         callback(null, false)
@@ -272,7 +278,8 @@ open class KotlinSupport : LanguageSupport() {
             ".$curFileExt#L$lineNumber"
         }
         // Returning new url
-        callback("${windowLocSplit[0]}/${matchingImport!!.replace('.', '/')}$fileExt", true)
+        this.fileUrl = "${windowLocSplit[0]}/${matchingImport!!.replace('.', '/')}$fileExt"
+        callback(fileUrl, true)
     }
 
     private fun isImportStatement(htmlSpanElement: HTMLSpanElement): Boolean {
