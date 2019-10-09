@@ -82,7 +82,6 @@ open class KotlinSupport : LanguageSupport() {
                 }
 
             } else if (isInternalMethodCall(htmlSpanElement)) {
-
                 println("Internal method call..")
 
                 // internal method call
@@ -395,7 +394,7 @@ open class KotlinSupport : LanguageSupport() {
         return "(?:interface|class)\\s*$inputText\\s*[{(]"
     }
 
-    private fun getMethodRegEx(methodName: String): String {
+    open fun getMethodRegEx(methodName: String): String {
         return "fun\\s*$methodName\\s*\\("
     }
 

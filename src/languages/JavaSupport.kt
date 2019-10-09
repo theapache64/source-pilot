@@ -90,6 +90,10 @@ open class JavaSupport : KotlinSupport() {
         return JavaParser.parseStringName(inputText)
     }
 
+    override fun getMethodRegEx(methodName: String): String {
+        return "\\w+\\s+\\w+\\s+$methodName\\(\\)"
+    }
+
     override fun getImportStatement(importStatement: String): String {
         return "import $importStatement;"
     }
