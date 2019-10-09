@@ -10,6 +10,10 @@ import utils.XMLLineFinder
 import kotlin.browser.document
 import kotlin.browser.window
 
+/**
+ * To support .kt (kotlin) files
+ * This class will be extended by JavaSupport. All 'open' methods will be overriden in `JavaSupport`
+ */
 open class KotlinSupport : LanguageSupport() {
 
     companion object {
@@ -31,6 +35,7 @@ open class KotlinSupport : LanguageSupport() {
         if (!isKotlinDataType(inputText)) {
 
             if (isLayoutName(htmlSpanElement)) {
+
                 println("Getting layout file name for $inputText")
                 val layoutFileName = CommonParser.parseLayoutFileName(inputText)
                 println("Layout file name is $layoutFileName")
@@ -40,7 +45,8 @@ open class KotlinSupport : LanguageSupport() {
                 callback(newUrl, true)
 
             } else if (isStringRes(htmlSpanElement)) {
-                val stringResName = KotlinParser.getStringResName(inputText)
+
+                val stringResName = getStringName(inputText)
                 println("StringRes is $stringResName")
                 val currentUrl = window.location.toString()
                 val stringXml = "${currentUrl.split("main")[0]}main/res/values/strings.xml"
@@ -133,6 +139,10 @@ open class KotlinSupport : LanguageSupport() {
             println("It was a kotlin data type")
             callback(null, true)
         }
+    }
+
+    open fun getStringName(inputText: String): String {
+        return KotlinParser.getStringResName(inputText)
     }
 
     private fun getFunRegEx(methodName: String): String {
@@ -319,7 +329,8 @@ open class KotlinSupport : LanguageSupport() {
         return htmlSpanElement.previousElementSibling?.textContent.equals(".menu")
     }
 
-    private fun isStringRes(htmlSpanElement: HTMLSpanElement): Boolean {
+
+    open fun isStringRes(htmlSpanElement: HTMLSpanElement): Boolean {
         return htmlSpanElement.previousElementSibling?.textContent.equals(".string")
     }
 

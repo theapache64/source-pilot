@@ -2,6 +2,7 @@ package languages
 
 import org.w3c.dom.HTMLSpanElement
 import org.w3c.dom.get
+import utils.JavaParser
 
 
 open class JavaSupport : KotlinSupport() {
@@ -64,15 +65,29 @@ open class JavaSupport : KotlinSupport() {
         return element.startsWith(LAYOUT_PREFIX) // can add more prefix here
     }
 
+    override fun isStringRes(htmlSpanElement: HTMLSpanElement): Boolean {
+        return isRes(htmlSpanElement, "string")
+    }
+
+
     override fun isLayoutName(htmlSpanElement: HTMLSpanElement): Boolean {
+        return isRes(htmlSpanElement, "layout")
+    }
+
+    private fun isRes(htmlSpanElement: HTMLSpanElement, res: String): Boolean {
         val clickedText = htmlSpanElement.textContent
         val fullLine = htmlSpanElement.parentElement?.textContent
         val semiSplit = fullLine?.split(";")?.get(0)
         if (semiSplit != null) {
-            println("Semi split is $semiSplit")
-            return semiSplit.matches("R\\.layout\\.${clickedText?.replace("\\W+".toRegex(), "")}")
+            val isMatch = semiSplit.matches("R\\.$res\\.${clickedText?.replace("\\W+".toRegex(), "")}")
+            println("is $clickedText is $res -> $isMatch")
+            return isMatch
         }
         return true
+    }
+
+    override fun getStringName(inputText: String): String {
+        return JavaParser.parseStringName(inputText)
     }
 
     override fun getImportStatement(importStatement: String): String {
