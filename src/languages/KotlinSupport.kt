@@ -197,7 +197,6 @@ open class KotlinSupport : LanguageSupport() {
         for (i in 0 until allTd.length) {
             val td = allTd[i] as Element
             val line = td.textContent
-            println("Line is $line")
             if (line != null && line.matches(matchRegEx)) {
                 return td.id.replace("LC", "").toInt()
             }
@@ -284,7 +283,6 @@ open class KotlinSupport : LanguageSupport() {
 
     private fun isImportStatement(htmlSpanElement: HTMLSpanElement): Boolean {
         val fullLine = htmlSpanElement.parentElement?.textContent
-        println("Full line is $fullLine")
         return fullLine?.matches(KotlinParser.IMPORT_PATTERN) ?: false
     }
 
