@@ -102,6 +102,7 @@ open class KotlinSupport : LanguageSupport() {
                     callback(null, false)
                 }
             } else if (isVariable(htmlSpanElement)) {
+                println("It's a variable")
                 val assignLineNumber = getAssignedLineNumber(inputText)
                 goto(assignLineNumber, callback)
             } else if (KotlinParser.isExternalMethodCall(inputText, htmlSpanElement)) {
@@ -179,7 +180,7 @@ open class KotlinSupport : LanguageSupport() {
     }
 
     private fun isVariable(htmlSpanElement: HTMLSpanElement): Boolean {
-        return htmlSpanElement.textContent?.matches("\\w+") ?: false
+        return htmlSpanElement.className != "pl-en" && htmlSpanElement.textContent?.matches("\\w+") ?: false
                 && getNextNonSpaceSiblingElement(htmlSpanElement)?.textContent?.startsWith(".") ?: false
     }
 
@@ -325,7 +326,7 @@ open class KotlinSupport : LanguageSupport() {
                 && htmlSpanElement.previousElementSibling?.textContent?.isBlank() ?: true
     }
 
-    private fun isMenuRes(htmlSpanElement: HTMLSpanElement): Boolean {
+    open fun isMenuRes(htmlSpanElement: HTMLSpanElement): Boolean {
         return htmlSpanElement.previousElementSibling?.textContent.equals(".menu")
     }
 
