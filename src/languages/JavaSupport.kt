@@ -64,6 +64,17 @@ open class JavaSupport : KotlinSupport() {
         return element.startsWith(LAYOUT_PREFIX) // can add more prefix here
     }
 
+    override fun isLayoutName(htmlSpanElement: HTMLSpanElement): Boolean {
+        val clickedText = htmlSpanElement.textContent
+        val fullLine = htmlSpanElement.parentElement?.textContent
+        val semiSplit = fullLine?.split(";")?.get(0)
+        if (semiSplit != null) {
+            println("Semi split is $semiSplit")
+            return semiSplit.matches("R\\.layout\\.${clickedText?.replace("\\W+".toRegex(), "")}")
+        }
+        return true
+    }
+
     override fun getImportStatement(importStatement: String): String {
         return "import $importStatement;"
     }

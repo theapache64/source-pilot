@@ -5,7 +5,7 @@ import languages.KotlinSupport
 object CommonParser {
 
     private val EXT_PATTERN = "\\.(\\w+)".toRegex()
-    private val LAYOUT_NAME = "\\.(.+)\\)".toRegex()
+    private val LAYOUT_NAME = "(\\w+)\\)".toRegex()
     private val MENU_NAME = "\\.(.+)".toRegex()
     private val XML_VALUE = "\\/([\\w.]+)".toRegex()
     private val LINE_NUMBER_REGEX = "(?<urlOnly>.+)#[L\\d\\-:]+\$".toRegex()

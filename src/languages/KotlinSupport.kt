@@ -31,9 +31,14 @@ open class KotlinSupport : LanguageSupport() {
         if (!isKotlinDataType(inputText)) {
 
             if (isLayoutName(htmlSpanElement)) {
+                println("Getting layout file name for $inputText")
                 val layoutFileName = CommonParser.parseLayoutFileName(inputText)
+                println("Layout file name is $layoutFileName")
                 val currentUrl = window.location.toString()
-                callback("${currentUrl.split("main")[0]}main/res/layout/$layoutFileName.xml", true)
+                val newUrl = "${currentUrl.split("main")[0]}main/res/layout/$layoutFileName.xml"
+                println("New URL is $newUrl")
+                callback(newUrl, true)
+
             } else if (isStringRes(htmlSpanElement)) {
                 val stringResName = KotlinParser.getStringResName(inputText)
                 println("StringRes is $stringResName")
@@ -179,7 +184,7 @@ open class KotlinSupport : LanguageSupport() {
         return null
     }
 
-    private fun getPreviousNonSpaceSiblingElement(htmlSpanElement: HTMLElement): Element? {
+    private fun getPreviousNonSpaceSiblingElement(htmlSpanElement: Element): Element? {
         var x = htmlSpanElement.previousElementSibling
         while (x != null) {
             if (x.textContent?.isNotBlank() == true) {
@@ -318,7 +323,7 @@ open class KotlinSupport : LanguageSupport() {
         return htmlSpanElement.previousElementSibling?.textContent.equals(".string")
     }
 
-    private fun isLayoutName(htmlSpanElement: HTMLSpanElement): Boolean {
+    open fun isLayoutName(htmlSpanElement: HTMLSpanElement): Boolean {
         return htmlSpanElement.previousElementSibling?.textContent.equals(".layout")
     }
 
