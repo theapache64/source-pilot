@@ -195,7 +195,7 @@ open class KotlinSupport : LanguageSupport() {
                 && getNextNonSpaceSiblingElement(htmlSpanElement)?.textContent?.startsWith(".") ?: false
     }
 
-    private fun getNextNonSpaceSiblingElement(htmlSpanElement: HTMLElement): Element? {
+    protected fun getNextNonSpaceSiblingElement(htmlSpanElement: HTMLElement): Element? {
         var x = htmlSpanElement.nextElementSibling
         while (x != null) {
             if (x.textContent?.isNotBlank() == true) {
@@ -289,7 +289,7 @@ open class KotlinSupport : LanguageSupport() {
         return s
     }
 
-    private fun isClickedOnEndClass(htmlSpanElement: HTMLSpanElement): Boolean {
+    open fun isClickedOnEndClass(htmlSpanElement: HTMLSpanElement): Boolean {
         return htmlSpanElement.nextElementSibling == null
     }
 
@@ -305,12 +305,14 @@ open class KotlinSupport : LanguageSupport() {
         }
         // Returning new url
         this.fileUrl = "${windowLocSplit[0]}/${matchingImport!!.replace('.', '/')}$fileExt"
+        println("GEN URL is $fileUrl -> isDir : $isDir ")
         callback(fileUrl, true)
     }
 
     open fun isImportStatement(htmlSpanElement: HTMLSpanElement): Boolean {
-        val fullLine = htmlSpanElement.parentElement?.textContent
-        return fullLine?.matches(KotlinParser.IMPORT_PATTERN) ?: false
+        val fullLine = htmlSpanElement.parentElement?.textContent ?: ""
+        println("IMPORT: full import line is $fullLine")
+        return KotlinParser.IMPORT_PATTERN.matches(fullLine) ?: false
     }
 
     private fun goto(lineNumber: Int, callback: (url: String?, isNewTab: Boolean) -> Unit) {

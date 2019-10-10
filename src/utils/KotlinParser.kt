@@ -6,7 +6,7 @@ import org.w3c.dom.HTMLSpanElement
 object KotlinParser {
 
     // Constants
-    val IMPORT_PATTERN = "import (?<importStatement>[\\w\\.]+)".toRegex()
+    val IMPORT_PATTERN = "import (?<importStatement>[\\w\\.]+);?".toRegex()
     private val PACKAGE_PATTERN = "package (?<importStatement>[\\w\\.]+)".toRegex()
     private val STRING_PATTERN = "\\.(.\\w+)\\)".toRegex()
     private val INTERNAL_METHOD_CALL_PATTERN = "^\\s*(?<methodName>\\w+)\\(".toRegex()

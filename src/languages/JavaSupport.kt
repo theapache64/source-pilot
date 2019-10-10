@@ -106,4 +106,8 @@ open class JavaSupport : KotlinSupport() {
     override fun getImportStatement(importStatement: String): String {
         return "import $importStatement;"
     }
+
+    override fun isClickedOnEndClass(htmlSpanElement: HTMLSpanElement): Boolean {
+        return getNextNonSpaceSiblingElement(htmlSpanElement)?.textContent?.trim() == ";"
+    }
 }
