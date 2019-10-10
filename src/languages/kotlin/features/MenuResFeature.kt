@@ -1,11 +1,12 @@
 package languages.kotlin.features
 
+import base.LanguageSupport
 import core.BaseFeature
 import org.w3c.dom.HTMLSpanElement
 import utils.CommonParser
 import kotlin.browser.window
 
-class MenuResFeature : BaseFeature {
+class MenuResFeature(languageSupport: LanguageSupport) : BaseFeature(languageSupport) {
 
     override fun isMatch(inputText: String, htmlSpanElement: HTMLSpanElement): Boolean {
         return htmlSpanElement.previousElementSibling?.textContent.equals(".menu")

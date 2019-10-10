@@ -133,7 +133,6 @@ fun checkIsClickable(inputText: String) {
             activeElement?.style?.textDecoration = "underline"
             doubleCheckUrl(newUrl)
         } else {
-            println("New url is null, so it's not clickable :(")
             resLink = null
             isNewTab = null
             removeUnderlineFromActiveElement()

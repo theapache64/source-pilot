@@ -9,13 +9,13 @@ import utils.CommonParser
 import kotlin.browser.document
 import kotlin.browser.window
 
-class InternalMethodCallFeature : BaseFeature {
+class InternalMethodCallFeature(languageSupport: LanguageSupport) : BaseKotlinFeature(languageSupport) {
 
     override fun isMatch(inputText: String, htmlSpanElement: HTMLSpanElement): Boolean {
         return isInternalMethodCall(htmlSpanElement)
     }
 
-    override fun handle(languageSupport: LanguageSupport, inputText: String, htmlSpanElement: HTMLSpanElement, callback: (url: String?, isNewTab: Boolean) -> Unit) {
+    override fun handle(inputText: String, htmlSpanElement: HTMLSpanElement, callback: (url: String?, isNewTab: Boolean) -> Unit) {
         // internal method call
         val methodName = inputText.trim()
         val lineNumbers = getMethodDefinitionLineNumber(methodName)
@@ -56,6 +56,7 @@ class InternalMethodCallFeature : BaseFeature {
     private fun isInternalMethodCall(htmlSpanElement: HTMLSpanElement): Boolean {
         return htmlSpanElement.nextElementSibling?.textContent?.startsWith("(") ?: false
                 && htmlSpanElement.className != "pl-en"
+                && htmlSpanElement.className != "pl-e" // extending class name
                 && htmlSpanElement.previousElementSibling?.textContent?.isBlank() ?: true
     }
 
@@ -64,16 +65,4 @@ class InternalMethodCallFeature : BaseFeature {
     }
 
 
-    private fun goto(lineNumber: Int, callback: (url: String?, isNewTab: Boolean) -> Unit) {
-        if (lineNumber > 0) {
-            var currentUrl = window.location.toString()
-            if (CommonParser.hasLineNumber(currentUrl)) {
-                currentUrl = CommonParser.parseUrlOnly(currentUrl)
-            }
-
-            callback("$currentUrl#L$lineNumber", false)
-        } else {
-            callback(null, false)
-        }
-    }
 }

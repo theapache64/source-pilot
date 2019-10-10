@@ -8,6 +8,7 @@ import kotlin.browser.window
 
 /**
  * This class is used to support Android XML
+ * TODO : Change to feature based arch
  */
 class AndroidXMLSupport : LanguageSupport() {
 

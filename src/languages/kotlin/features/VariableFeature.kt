@@ -3,12 +3,14 @@ package languages.kotlin.features
 import base.LanguageSupport
 import core.BaseFeature
 import org.w3c.dom.Element
+import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLSpanElement
 import org.w3c.dom.get
 import utils.KotlinParser
 import kotlin.browser.document
 
-class VariableFeature(languageSupport: LanguageSupport) : BaseFeature(languageSupport) {
+open class VariableFeature(languageSupport: LanguageSupport) : BaseKotlinFeature(languageSupport) {
+
     override fun isMatch(inputText: String, htmlSpanElement: HTMLSpanElement): Boolean {
         return isVariable(htmlSpanElement)
     }
@@ -37,5 +39,17 @@ class VariableFeature(languageSupport: LanguageSupport) : BaseFeature(languageSu
         return htmlSpanElement.className != "pl-en" && htmlSpanElement.textContent?.matches("\\w+") ?: false
                 && getNextNonSpaceSiblingElement(htmlSpanElement)?.textContent?.startsWith(".") ?: false
     }
+
+    private fun getNextNonSpaceSiblingElement(htmlSpanElement: HTMLElement): Element? {
+        var x = htmlSpanElement.nextElementSibling
+        while (x != null) {
+            if (x.textContent?.isNotBlank() == true) {
+                return x
+            }
+            x = x.nextElementSibling
+        }
+        return null
+    }
+
 
 }

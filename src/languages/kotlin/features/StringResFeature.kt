@@ -1,12 +1,13 @@
 package languages.kotlin.features
 
+import base.LanguageSupport
 import core.BaseFeature
 import org.w3c.dom.HTMLSpanElement
 import utils.KotlinParser
 import utils.XMLLineFinder
 import kotlin.browser.window
 
-class StringResFeature : BaseFeature {
+class StringResFeature(languageSupport: LanguageSupport) : BaseFeature(languageSupport) {
 
     override fun isMatch(inputText: String, htmlSpanElement: HTMLSpanElement): Boolean {
         return htmlSpanElement.previousElementSibling?.textContent.equals(".string")

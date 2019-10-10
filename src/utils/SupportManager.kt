@@ -3,7 +3,7 @@ package utils
 import base.LanguageSupport
 import languages.AndroidXMLSupport
 import languages.JavaSupport
-import languages.KotlinSupport
+import languages.kotlin.KotlinSupport
 import kotlin.browser.window
 
 /**

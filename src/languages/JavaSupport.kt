@@ -1,5 +1,6 @@
 package languages
 
+import languages.kotlin.KotlinSupport
 import org.w3c.dom.HTMLSpanElement
 import org.w3c.dom.get
 import utils.JavaParser
@@ -62,28 +63,28 @@ open class JavaSupport : KotlinSupport() {
     }
 
     private fun isSupportedElement(element: String): Boolean {
-        return element.startsWith(LAYOUT_PREFIX) // can add more prefix here
+        return element.startsWith(".layout.") // can add more prefix here
     }
 
-    override fun isStringRes(htmlSpanElement: HTMLSpanElement): Boolean {
-        return isRes(htmlSpanElement, "string")
-    }
+    /* override fun isStringRes(htmlSpanElement: HTMLSpanElement): Boolean {
+         return isRes(htmlSpanElement, "string")
+     }
 
-    override fun isMenuRes(htmlSpanElement: HTMLSpanElement): Boolean {
-        return isRes(htmlSpanElement, "menu")
-    }
+     override fun isMenuRes(htmlSpanElement: HTMLSpanElement): Boolean {
+         return isRes(htmlSpanElement, "menu")
+     }
 
-    override fun getMenuFileName(inputText: String): String? {
-        println("Menu file name is $inputText")
-        return inputText
-    }
+     override fun getMenuFileName(inputText: String): String? {
+         println("Menu file name is $inputText")
+         return inputText
+     }
 
 
-    override fun isLayoutName(htmlSpanElement: HTMLSpanElement): Boolean {
-        return isRes(htmlSpanElement, "layout")
-    }
+     override fun isLayoutName(htmlSpanElement: HTMLSpanElement): Boolean {
+         return isRes(htmlSpanElement, "layout")
+     }*/
 
-    private fun isRes(htmlSpanElement: HTMLSpanElement, res: String): Boolean {
+    /*private fun isRes(htmlSpanElement: HTMLSpanElement, res: String): Boolean {
         val clickedText = htmlSpanElement.textContent
         val fullLine = htmlSpanElement.parentElement?.textContent
         val semiSplit = fullLine?.split(";")?.get(0)
@@ -93,21 +94,21 @@ open class JavaSupport : KotlinSupport() {
             return isMatch
         }
         return true
-    }
+    }*/
 
-    fun getStringName(inputText: String): String {
+    /*fun getStringName(inputText: String): String {
         return JavaParser.parseStringName(inputText)
-    }
+    }*/
 
-    override fun getMethodRegEx(methodName: String): String {
+    /*override fun getMethodRegEx(methodName: String): String {
         return "\\w+\\s+\\w+\\s+$methodName\\(\\)"
-    }
+    }*/
 
-    override fun getImportStatement(importStatement: String): String {
-        return "import $importStatement;"
-    }
+    /*override fun getImportStatement(importStatement: String): String {
+         return "import $importStatement;"
+     }*/
 
-    override fun isClickedOnEndClass(htmlSpanElement: HTMLSpanElement): Boolean {
+    /*override fun isClickedOnEndClass(htmlSpanElement: HTMLSpanElement): Boolean {
         return getNextNonSpaceSiblingElement(htmlSpanElement)?.textContent?.trim() == ";"
-    }
+    }*/
 }

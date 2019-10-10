@@ -1,15 +1,16 @@
 package languages.kotlin.features
 
 import base.LanguageSupport
-import core.BaseFeature
-import extensions.startsWithUppercaseLetter
-import languages.KotlinSupport
+import languages.kotlin.KotlinSupport
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLSpanElement
 import utils.KotlinLineFinder
 import utils.KotlinParser
 
-class ExternalMethodCallFeature : BaseFeature {
+/**
+ * To navigate to external method call definition (method calls to another classes using objects)
+ */
+open class ExternalMethodCallFeature(languageSupport: LanguageSupport) : BaseKotlinFeature(languageSupport) {
 
     companion object {
         private val VARIABLE_METHOD_CALL_PATTERN = "\\.\\s*\\w+\\s*".toRegex()
@@ -19,7 +20,7 @@ class ExternalMethodCallFeature : BaseFeature {
         return isExternalMethodCall(inputText, htmlSpanElement)
     }
 
-    override fun handle(languageSupport: LanguageSupport, inputText: String, htmlSpanElement: HTMLSpanElement, callback: (url: String?, isNewTab: Boolean) -> Unit) {
+    override fun handle(inputText: String, htmlSpanElement: HTMLSpanElement, callback: (url: String?, isNewTab: Boolean) -> Unit) {
 
         println("$inputText is an external method call")
         val variableName = getVariableName(htmlSpanElement)
@@ -53,18 +54,13 @@ class ExternalMethodCallFeature : BaseFeature {
     }
 
 
-    private fun getVariableType(languageSupport: LanguageSupport, variableName: String?): String? {
+    private fun getVariableType(variableName: String?): String? {
         return KotlinParser.getAssignedFrom(languageSupport.getFullCode(), variableName)
-    }
-
-    private fun isAssignedViaMethod(assignedFrom: String): Boolean {
-        return assignedFrom.matches("(?<variableName>\\w+)\\s*.\\s*(?<methodName>\\w+)")
     }
 
     private fun isClassName(assignedFrom: String?): Boolean {
         return assignedFrom?.matches("\\w+") ?: false
     }
-
 
     private fun getPreviousNonSpaceSiblingElement(htmlSpanElement: Element): Element? {
         var x = htmlSpanElement.previousElementSibling
@@ -97,66 +93,5 @@ class ExternalMethodCallFeature : BaseFeature {
         return isMethodCall && hasMethodVariable
     }
 
-    private fun gotoClass(inputText: String, htmlSpanElement: HTMLSpanElement, callback: (url: String?, isNewTab: Boolean) -> Unit) {
 
-        val currentPackageName = KotlinParser.getCurrentPackageName(getFullCode())
-
-        // Getting possible import statements for the class
-        val matchingImport = getMatchingImport(inputText, currentPackageName, htmlSpanElement)
-
-        when {
-
-            isInnerInterfaceOrClass(inputText) -> {
-                val lineNumber = getLineNumber(getContentRegEx(inputText))
-                goto(lineNumber, callback)
-            }
-
-            isClickableImport(matchingImport) -> {
-                gotoImport(currentPackageName, matchingImport, false, callback)
-            }
-
-            else -> {
-                println("No import matched! Matching importing was : $matchingImport")
-                callback(null, true)
-            }
-        }
-    }
-
-    private fun isInnerInterfaceOrClass(kotlinSupport: KotlinSupport, inputText: String): Boolean {
-        val fullCode = kotlinSupport.getFullCode()
-        return fullCode.matches(getContentRegEx(inputText))
-    }
-
-    private fun getContentRegEx(inputText: String): String {
-        return "(?:interface|class)\\s*$inputText\\s*[{(]"
-    }
-
-    /**
-     * To get matching import for the input passed from the imports in the file.
-     */
-    private fun getMatchingImport(_inputText: String, currentPackageName: String, htmlSpanElement: HTMLSpanElement): String? {
-
-        // Removing '?' from inputText. For eg: Bundle? -> Bundle
-        val inputText = _inputText.replace("?", "")
-
-        val matchingImports = imports.filter { it.endsWith(".$inputText") }
-        println("Matching imports are : $matchingImports")
-        return if (matchingImports.isNotEmpty()) {
-            matchingImports.first()
-        } else {
-            println("No import matched for $inputText, setting current name : $currentPackageName")
-            if (inputText.startsWithUppercaseLetter()) {
-                "$currentPackageName.$inputText"
-            } else {
-                // Checking if it's the import statement it self
-                println("Checking if it's import statement")
-                val isImportStatement = htmlSpanElement.parentElement?.textContent.equals(getImportStatement(inputText))
-                if (isImportStatement) {
-                    inputText
-                } else {
-                    null
-                }
-            }
-        }
-    }
 }

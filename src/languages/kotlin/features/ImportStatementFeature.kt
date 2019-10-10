@@ -2,18 +2,14 @@ package languages.kotlin.features
 
 import base.LanguageSupport
 import core.BaseFeature
-import languages.KotlinSupport
+import languages.kotlin.KotlinSupport
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLSpanElement
 import utils.CommonParser
 import utils.KotlinParser
 import kotlin.browser.window
 
-class ImportStatementFeature : BaseFeature {
-
-    companion object {
-        private const val DATA_BINDING_IMPORT_REGEX = ".*\\.databinding\\..+Binding"
-    }
+class ImportStatementFeature(languageSupport: LanguageSupport) : BaseKotlinFeature(languageSupport) {
 
     override fun isMatch(inputText: String, htmlSpanElement: HTMLSpanElement): Boolean {
         val fullLine = htmlSpanElement.parentElement?.textContent ?: ""
@@ -21,7 +17,7 @@ class ImportStatementFeature : BaseFeature {
     }
 
 
-    override fun handle(languageSupport: LanguageSupport, inputText: String, htmlSpanElement: HTMLSpanElement, callback: (url: String?, isNewTab: Boolean) -> Unit) {
+    override fun handle(inputText: String, htmlSpanElement: HTMLSpanElement, callback: (url: String?, isNewTab: Boolean) -> Unit) {
         println("Clicked on an import statement")
 
         val currentPackageName = KotlinParser.getCurrentPackageName(languageSupport.getFullCode())
@@ -38,29 +34,12 @@ class ImportStatementFeature : BaseFeature {
         }
 
         if (isClickableImport(importPackage)) {
-            gotoImport(languageSupport as KotlinSupport, currentPackageName, importPackage, isDir, callback)
+            gotoImport(currentPackageName, importPackage, isDir, callback)
         } else {
             callback(null, false)
         }
     }
 
-
-    /**
-     * To check if the passed import passes all non matching conditions
-     */
-    private fun isClickableImport(matchingImport: String?): Boolean {
-        return matchingImport != null &&
-                !matchingImport.startsWith("android.") &&
-                !matchingImport.startsWith("java.") &&
-                !matchingImport.startsWith("androidx.") &&
-                !matchingImport.startsWith("kotlinx.android.synthetic.") &&
-                !matchingImport.startsWith("com.google.android.material.") &&
-                !isDataBindingImport(matchingImport)
-    }
-
-    private fun isDataBindingImport(matchingImport: String): Boolean {
-        return matchingImport.matches(DATA_BINDING_IMPORT_REGEX)
-    }
 
     private fun isClickedOnEndClass(htmlSpanElement: HTMLSpanElement): Boolean {
         return htmlSpanElement.nextElementSibling == null
@@ -79,23 +58,4 @@ class ImportStatementFeature : BaseFeature {
         }
         return s
     }
-
-    private fun gotoImport(kotlinSupport: KotlinSupport, currentPackageName: String, matchingImport: String?, isDir: Boolean, callback: (url: String?, isNewTab: Boolean) -> Unit, lineNumber: Int = 1) {
-
-        val currentUrl = window.location.toString()
-        val curFileExt = CommonParser.parseFileExt(currentUrl)
-        val packageSlash = '/' + currentPackageName.replace('.', '/');
-        val windowLocSplit = currentUrl.split(packageSlash)
-        val fileExt = if (isDir) {
-            ""
-        } else {
-            ".$curFileExt#L$lineNumber"
-        }
-
-        // Returning new url
-        kotlinSupport.fileUrl = "${windowLocSplit[0]}/${matchingImport!!.replace('.', '/')}$fileExt"
-        callback(kotlinSupport.fileUrl, true)
-    }
-
-
 }

@@ -1,7 +1,5 @@
 package utils
 
-import languages.KotlinSupport
-
 object CommonParser {
 
     private val EXT_PATTERN = "\\.(\\w+)".toRegex()
