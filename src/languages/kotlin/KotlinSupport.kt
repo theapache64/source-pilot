@@ -3,7 +3,8 @@ package languages
 import base.LanguageSupport
 import core.BaseFeature
 import extensions.startsWithUppercaseLetter
-import languages.kotlin.features.LayoutFeature
+import languages.kotlin.features.LayoutResFeature
+import languages.kotlin.features.StringResFeature
 import org.w3c.dom.*
 import utils.CommonParser
 import utils.KotlinLineFinder
@@ -29,7 +30,8 @@ open class KotlinSupport : LanguageSupport() {
 
     override fun getFeatures(): List<BaseFeature> {
         return listOf(
-                LayoutFeature()
+                LayoutResFeature(),
+                StringResFeature()
         )
     }
 
@@ -50,17 +52,7 @@ open class KotlinSupport : LanguageSupport() {
             }
 
 
-            if (isStringRes(htmlSpanElement)) {
-
-                val stringResName = getStringName(inputText)
-                println("StringRes is $stringResName")
-                val currentUrl = window.location.toString()
-                val stringXml = "${currentUrl.split("main")[0]}main/res/values/strings.xml"
-                callback(stringXml, true)
-                XMLLineFinder.getLineNumber(stringXml, stringResName) { lineNumber ->
-                    callback("$stringXml#L$lineNumber", true)
-                }
-            } else if (isMenuRes(htmlSpanElement)) {
+            if (isMenuRes(htmlSpanElement)) {
                 println("Generating new url for menu : $inputText")
                 val menuFileName = getMenuFileName(inputText)
                 val currentUrl = window.location.toString()
@@ -159,10 +151,6 @@ open class KotlinSupport : LanguageSupport() {
 
     open fun getMenuFileName(inputText: String): String? {
         return CommonParser.parseMenuFileName(inputText)
-    }
-
-    open fun getStringName(inputText: String): String {
-        return KotlinParser.getStringResName(inputText)
     }
 
     private fun getFunRegEx(methodName: String): String {
@@ -320,7 +308,7 @@ open class KotlinSupport : LanguageSupport() {
     open fun isImportStatement(htmlSpanElement: HTMLSpanElement): Boolean {
         val fullLine = htmlSpanElement.parentElement?.textContent ?: ""
         println("IMPORT: full import line is $fullLine")
-        return KotlinParser.IMPORT_PATTERN.matches(fullLine) ?: false
+        return KotlinParser.IMPORT_PATTERN.matches(fullLine)
     }
 
     private fun goto(lineNumber: Int, callback: (url: String?, isNewTab: Boolean) -> Unit) {

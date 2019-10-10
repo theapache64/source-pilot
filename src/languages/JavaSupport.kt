@@ -95,7 +95,7 @@ open class JavaSupport : KotlinSupport() {
         return true
     }
 
-    override fun getStringName(inputText: String): String {
+    fun getStringName(inputText: String): String {
         return JavaParser.parseStringName(inputText)
     }
 

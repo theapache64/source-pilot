@@ -5,7 +5,7 @@ import org.w3c.dom.HTMLSpanElement
 import utils.CommonParser
 import kotlin.browser.window
 
-class LayoutFeature : BaseFeature {
+class LayoutResFeature : BaseFeature {
 
     override fun isMatch(inputText: String, htmlSpanElement: HTMLSpanElement): Boolean {
         return htmlSpanElement.previousElementSibling?.textContent.equals(".layout")
