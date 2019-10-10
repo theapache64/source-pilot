@@ -9,13 +9,15 @@ import utils.CommonParser
 import utils.KotlinParser
 import kotlin.browser.window
 
+/**
+ * To navigate to classes/directories from import statement
+ */
 class ImportStatementFeature(languageSupport: LanguageSupport) : BaseKotlinFeature(languageSupport) {
 
     override fun isMatch(inputText: String, htmlSpanElement: HTMLSpanElement): Boolean {
         val fullLine = htmlSpanElement.parentElement?.textContent ?: ""
         return KotlinParser.IMPORT_PATTERN.matches(fullLine)
     }
-
 
     override fun handle(inputText: String, htmlSpanElement: HTMLSpanElement, callback: (url: String?, isNewTab: Boolean) -> Unit) {
         println("Clicked on an import statement")
