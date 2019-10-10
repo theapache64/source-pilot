@@ -6,7 +6,7 @@ A chrome extension to enable IDE like file navigation in GitHub
 
 ## Project Status
 
-🚧 This project is under active development. For release notification  
+🚧 This project is under active development. To get notified on the first release , click the ![](https://i.imgur.com/cC2v2N5.png) button
 
 ## Supported Languages
 
