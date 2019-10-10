@@ -7,6 +7,9 @@ import utils.KotlinParser
 import utils.XMLLineFinder
 import kotlin.browser.window
 
+/**
+ * To navigate to strings.xml from `R.string.some_string` call
+ */
 class StringResFeature(languageSupport: LanguageSupport) : BaseFeature(languageSupport) {
 
     override fun isMatch(inputText: String, htmlSpanElement: HTMLSpanElement): Boolean {

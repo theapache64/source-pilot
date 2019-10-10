@@ -12,9 +12,10 @@ import kotlin.browser.window
  */
 class AndroidXMLSupport : LanguageSupport() {
 
-    override fun getNewResourceUrl(inputText: String, htmlSpanElement: HTMLSpanElement, callback: (url: String?, isNewTab: Boolean) -> Unit) {
+    override fun getNewResourceUrl(_inputText: String, htmlSpanElement: HTMLSpanElement, callback: (url: String?, isNewTab: Boolean) -> Unit) {
         val currentUrl = window.location.toString()
 
+        val inputText = htmlSpanElement.parentElement?.textContent ?: ""
         val fileName = when {
             inputText.matches("@style\\/.+") -> "values/styles.xml"
             inputText.matches("@string\\/.+") -> "values/strings.xml"

@@ -6,6 +6,9 @@ import org.w3c.dom.HTMLSpanElement
 import utils.CommonParser
 import kotlin.browser.window
 
+/**
+ * To navigate to menu resource from `R.menu.menu_file` call
+ */
 class MenuResFeature(languageSupport: LanguageSupport) : BaseFeature(languageSupport) {
 
     override fun isMatch(inputText: String, htmlSpanElement: HTMLSpanElement): Boolean {

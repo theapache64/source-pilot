@@ -6,6 +6,10 @@ import org.w3c.dom.HTMLSpanElement
 import utils.CommonParser
 import kotlin.browser.window
 
+
+/**
+ * To navigate to layout from `R.layout.layout_file` call
+ */
 class LayoutResFeature(languageSupport: LanguageSupport) : BaseFeature(languageSupport) {
 
     override fun isMatch(inputText: String, htmlSpanElement: HTMLSpanElement): Boolean {

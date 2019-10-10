@@ -9,7 +9,10 @@ import org.w3c.dom.get
 import utils.KotlinParser
 import kotlin.browser.document
 
-open class VariableFeature(languageSupport: LanguageSupport) : BaseKotlinFeature(languageSupport) {
+/**
+ * To navigate to in-class variable type definition/ assignment line
+ */
+class VariableFeature(languageSupport: LanguageSupport) : BaseKotlinFeature(languageSupport) {
 
     override fun isMatch(inputText: String, htmlSpanElement: HTMLSpanElement): Boolean {
         return isVariable(htmlSpanElement)
