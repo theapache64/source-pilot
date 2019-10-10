@@ -27,6 +27,7 @@ You can install the extension via [Chrome Webstore](http://google.com)
     - [x] `R.string` navigation
     - [x] `R.menu` navigation
     - [x] `import` statement navigation
+    - [x] Directory navigation from import statement
     - [ ] in-class variable navigation
     - [ ] external-class variable navigation
     - [ ] in-class method navigation
