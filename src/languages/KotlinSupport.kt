@@ -308,7 +308,7 @@ open class KotlinSupport : LanguageSupport() {
         callback(fileUrl, true)
     }
 
-    private fun isImportStatement(htmlSpanElement: HTMLSpanElement): Boolean {
+    open fun isImportStatement(htmlSpanElement: HTMLSpanElement): Boolean {
         val fullLine = htmlSpanElement.parentElement?.textContent
         return fullLine?.matches(KotlinParser.IMPORT_PATTERN) ?: false
     }
