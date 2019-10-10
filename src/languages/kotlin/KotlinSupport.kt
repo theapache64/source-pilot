@@ -1,7 +1,9 @@
 package languages
 
 import base.LanguageSupport
+import core.BaseFeature
 import extensions.startsWithUppercaseLetter
+import languages.kotlin.features.LayoutFeature
 import org.w3c.dom.*
 import utils.CommonParser
 import utils.KotlinLineFinder
@@ -25,6 +27,12 @@ open class KotlinSupport : LanguageSupport() {
 
     private var fileUrl: String? = null
 
+    override fun getFeatures(): List<BaseFeature> {
+        return listOf(
+                LayoutFeature()
+        )
+    }
+
     /**
      * To hold imports in current kotlin file
      */
@@ -34,17 +42,15 @@ open class KotlinSupport : LanguageSupport() {
 
         if (!isKotlinDataType(inputText)) {
 
-            if (isLayoutName(htmlSpanElement)) {
+            for (feature in getFeatures()) {
+                if (feature.isMatch(inputText, htmlSpanElement)) {
+                    feature.handle(inputText, htmlSpanElement, callback)
+                    return
+                }
+            }
 
-                println("Getting layout file name for $inputText")
-                val layoutFileName = CommonParser.parseLayoutFileName(inputText)
-                println("Layout file name is $layoutFileName")
-                val currentUrl = window.location.toString()
-                val newUrl = "${currentUrl.split("main")[0]}main/res/layout/$layoutFileName.xml"
-                println("New URL is $newUrl")
-                callback(newUrl, true)
 
-            } else if (isStringRes(htmlSpanElement)) {
+            if (isStringRes(htmlSpanElement)) {
 
                 val stringResName = getStringName(inputText)
                 println("StringRes is $stringResName")
@@ -136,8 +142,10 @@ open class KotlinSupport : LanguageSupport() {
                 println("No match found")
                 callback(null, true)
             }
+
+
         } else {
-            println("It was a kotlin data type")
+            // it was a kotlin data type
             callback(null, true)
         }
     }
