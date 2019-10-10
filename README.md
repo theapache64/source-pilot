@@ -1,6 +1,6 @@
 ![](extras/graphics/banner.png)
 
-# source-pilot
+# source-pilot 🚧
 
 A chrome extension to enable IDE like file navigation in GitHub
 
