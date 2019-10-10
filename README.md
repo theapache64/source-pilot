@@ -1,13 +1,12 @@
 ![](extras/graphics/banner.png)
 
-# source-pilot
+# source-pilot 🚧
 
 A chrome extension to enable IDE like file navigation in GitHub
 
-## Install
+## Project Status
 
-You can install the extension via [Chrome Webstore](http://google.com)
-
+🚧 This project is under active development. To get notified on the first release , click the ![](https://i.imgur.com/cC2v2N5.png) button
 
 ## Supported Languages
 
