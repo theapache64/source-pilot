@@ -4,10 +4,9 @@
 
 A chrome extension to enable IDE like file navigation in GitHub
 
-## Install
+## Project Status
 
-You can install the extension via [Chrome Webstore](http://google.com)
-
+🚧 This project is under active development. For release notification  
 
 ## Supported Languages
 
