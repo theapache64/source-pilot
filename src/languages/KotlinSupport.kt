@@ -24,11 +24,11 @@ open class KotlinSupport : LanguageSupport() {
     }
 
     private var fileUrl: String? = null
+
     /**
      * To hold imports in current kotlin file
      */
     private val imports by lazy { KotlinParser.parseImports(getFullCode()) }
-
 
     override fun getNewResourceUrl(inputText: String, htmlSpanElement: HTMLSpanElement, callback: (url: String?, isNewTab: Boolean) -> Unit) {
 
@@ -56,9 +56,10 @@ open class KotlinSupport : LanguageSupport() {
                 }
             } else if (isMenuRes(htmlSpanElement)) {
                 println("Generating new url for menu : $inputText")
-                val menuFileName = CommonParser.parseMenuFileName(inputText)
+                val menuFileName = getMenuFileName(inputText)
                 val currentUrl = window.location.toString()
-                callback("${currentUrl.split("main")[0]}main/res/menu/$menuFileName.xml", true)
+                val newUrl = getMenuUrl(currentUrl, menuFileName)
+                callback(newUrl, true)
             } else if (isImportStatement(htmlSpanElement)) {
                 println("Clicked on an import statement")
 
@@ -139,6 +140,17 @@ open class KotlinSupport : LanguageSupport() {
             println("It was a kotlin data type")
             callback(null, true)
         }
+    }
+
+    private fun getMenuUrl(currentUrl: String, menuFileName: String?): String {
+        println("MENU: menuFileName : $menuFileName")
+        println("MENU: currentUrl : $currentUrl")
+        val lastMainIndex = currentUrl.indexOf("/main/")
+        return currentUrl.substring(0, lastMainIndex) + "/main/res/menu/$menuFileName.xml"
+    }
+
+    open fun getMenuFileName(inputText: String): String? {
+        return CommonParser.parseMenuFileName(inputText)
     }
 
     open fun getStringName(inputText: String): String {
@@ -328,7 +340,6 @@ open class KotlinSupport : LanguageSupport() {
     open fun isMenuRes(htmlSpanElement: HTMLSpanElement): Boolean {
         return htmlSpanElement.previousElementSibling?.textContent.equals(".menu")
     }
-
 
     open fun isStringRes(htmlSpanElement: HTMLSpanElement): Boolean {
         return htmlSpanElement.previousElementSibling?.textContent.equals(".string")

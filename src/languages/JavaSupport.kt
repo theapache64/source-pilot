@@ -69,6 +69,15 @@ open class JavaSupport : KotlinSupport() {
         return isRes(htmlSpanElement, "string")
     }
 
+    override fun isMenuRes(htmlSpanElement: HTMLSpanElement): Boolean {
+        return isRes(htmlSpanElement, "menu")
+    }
+
+    override fun getMenuFileName(inputText: String): String? {
+        println("Menu file name is $inputText")
+        return inputText
+    }
+
 
     override fun isLayoutName(htmlSpanElement: HTMLSpanElement): Boolean {
         return isRes(htmlSpanElement, "layout")
