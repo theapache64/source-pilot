@@ -17,7 +17,7 @@ open class JavaSupport : KotlinSupport() {
         return "java"
     }
 
-    override fun getNewResourceUrl(inputText: String, htmlSpanElement: HTMLSpanElement, callback: (url: String?, isNewTab: Boolean) -> Unit) {
+    /*override fun getNewResourceUrl(inputText: String, htmlSpanElement: HTMLSpanElement, callback: (url: String?, isNewTab: Boolean) -> Unit) {
         super.getNewResourceUrl(inputText, htmlSpanElement) { newUrl, isNewTab ->
             if (newUrl == null) {
                 val matchedText = getUpperSiblingsSplitted(htmlSpanElement)
@@ -30,7 +30,7 @@ open class JavaSupport : KotlinSupport() {
                 callback(newUrl, isNewTab)
             }
         }
-    }
+    }*/
 
 
     /**

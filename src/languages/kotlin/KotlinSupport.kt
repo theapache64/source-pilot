@@ -29,41 +29,6 @@ open class KotlinSupport : LanguageSupport() {
         )
     }
 
-
-    override fun getNewResourceUrl(inputText: String, htmlSpanElement: HTMLSpanElement, callback: (url: String?, isNewTab: Boolean) -> Unit) {
-
-        if (!isKotlinDataType(inputText)) {
-
-            for (feature in getFeatures()) {
-                if (feature.isMatch(inputText, htmlSpanElement)) {
-                    println("Matched with ${feature::class.simpleName}")
-                    feature.handle(inputText, htmlSpanElement, callback)
-                    return
-                }
-            }
-
-            println("No match found")
-            callback(null, false)
-
-        } else {
-            // it was a kotlin data type
-            callback(null, false)
-        }
-    }
-
-    private fun isKotlinDataType(_inputText: String): Boolean {
-        return when (_inputText.replace("?", "")) {
-            "Boolean",
-            "Long",
-            "Float",
-            "Double",
-            "Char",
-            "Int",
-            "String" -> true
-            else -> false
-        }
-    }
-
     override fun getFileExtension(): String {
         return "kt"
     }
