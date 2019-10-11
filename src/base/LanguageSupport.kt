@@ -6,6 +6,7 @@ import kotlin.browser.document
 
 abstract class LanguageSupport {
 
+    var fileUrl: String? = null
     private val fullCode = document.querySelector("table.highlight tbody")?.textContent
 
     abstract fun getFileExtension(): String
@@ -28,7 +29,5 @@ abstract class LanguageSupport {
         return fullCode
     }
 
-    open fun getFeatures(): List<BaseFeature> {
-        return listOf<BaseFeature>()
-    }
+    abstract fun getFeatures(): List<BaseFeature>
 }

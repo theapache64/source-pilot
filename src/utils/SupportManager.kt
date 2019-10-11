@@ -2,7 +2,7 @@ package utils
 
 import base.LanguageSupport
 import languages.xml.AndroidXMLSupport
-import languages.JavaSupport
+import languages.java.JavaSupport
 import languages.kotlin.KotlinSupport
 import kotlin.browser.window
 

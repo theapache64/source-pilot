@@ -52,9 +52,8 @@ abstract class BaseKotlinFeature(languageSupport: LanguageSupport) : BaseFeature
         }
 
         // Returning new url
-        val kotlinSupport = languageSupport as KotlinSupport
-        kotlinSupport.fileUrl = "${windowLocSplit[0]}/${matchingImport!!.replace('.', '/')}$fileExt"
-        callback(kotlinSupport.fileUrl, true)
+        languageSupport.fileUrl = "${windowLocSplit[0]}/${matchingImport!!.replace('.', '/')}$fileExt"
+        callback(languageSupport.fileUrl, true)
     }
 
     protected fun goto(lineNumber: Int, callback: (url: String?, isNewTab: Boolean) -> Unit) {
@@ -152,7 +151,6 @@ abstract class BaseKotlinFeature(languageSupport: LanguageSupport) : BaseFeature
         }
         return -1
     }
-
 
 
 }

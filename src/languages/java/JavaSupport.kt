@@ -1,17 +1,9 @@
-package languages
+package languages.java
 
 import languages.kotlin.KotlinSupport
-import org.w3c.dom.HTMLSpanElement
-import org.w3c.dom.get
-import utils.JavaParser
 
 
 open class JavaSupport : KotlinSupport() {
-
-    companion object {
-        private val REPLACE_REGEX = Regex("[^a-zA-Z._\\)\\(]+")
-    }
-
 
     override fun getFileExtension(): String {
         return "java"
@@ -37,7 +29,7 @@ open class JavaSupport : KotlinSupport() {
      * This will return sibling element in pyramid format
      * For eg: if sibling are 1, 2, 3, 4, 5
      * this method will return 5, 54, 543, 5432, 54321 if and only if the items are clickable
-     */
+     *//*
     private fun getUpperSiblingsSplitted(htmlSpanElement: HTMLSpanElement): String? {
 
         val sibSplitArr = mutableListOf<String>()
@@ -65,7 +57,7 @@ open class JavaSupport : KotlinSupport() {
     private fun isSupportedElement(element: String): Boolean {
         return element.startsWith(".layout.") // can add more prefix here
     }
-
+*/
     /* override fun isStringRes(htmlSpanElement: HTMLSpanElement): Boolean {
          return isRes(htmlSpanElement, "string")
      }

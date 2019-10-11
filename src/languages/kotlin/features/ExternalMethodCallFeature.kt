@@ -32,7 +32,7 @@ open class ExternalMethodCallFeature(languageSupport: LanguageSupport) : BaseKot
                 gotoClass(variableType!!, htmlSpanElement, callback)
 
                 // Getting line number
-                val fileUrl = (languageSupport as KotlinSupport).fileUrl
+                val fileUrl = languageSupport.fileUrl
                 if (fileUrl != null) {
                     KotlinLineFinder.getLineNumber(fileUrl, getFunRegEx(inputText.replace(".", ""))) { lineNumber ->
                         val newUrl = "${fileUrl.replace("#L.+".toRegex(), "")}#L$lineNumber"
