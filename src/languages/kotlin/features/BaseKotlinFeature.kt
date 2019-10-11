@@ -5,6 +5,7 @@ import core.BaseFeature
 import extensions.startsWithUppercaseLetter
 import languages.kotlin.KotlinSupport
 import org.w3c.dom.Element
+import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLSpanElement
 import org.w3c.dom.get
 import utils.CommonParser
@@ -151,6 +152,18 @@ abstract class BaseKotlinFeature(languageSupport: LanguageSupport) : BaseFeature
         }
         return -1
     }
+
+    protected fun getNextNonSpaceSiblingElement(htmlSpanElement: HTMLElement): Element? {
+        var x = htmlSpanElement.nextElementSibling
+        while (x != null) {
+            if (x.textContent?.isNotBlank() == true) {
+                return x
+            }
+            x = x.nextElementSibling
+        }
+        return null
+    }
+
 
 
 }

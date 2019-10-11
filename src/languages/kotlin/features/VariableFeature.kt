@@ -43,16 +43,6 @@ class VariableFeature(languageSupport: LanguageSupport) : BaseKotlinFeature(lang
                 && getNextNonSpaceSiblingElement(htmlSpanElement)?.textContent?.startsWith(".") ?: false
     }
 
-    private fun getNextNonSpaceSiblingElement(htmlSpanElement: HTMLElement): Element? {
-        var x = htmlSpanElement.nextElementSibling
-        while (x != null) {
-            if (x.textContent?.isNotBlank() == true) {
-                return x
-            }
-            x = x.nextElementSibling
-        }
-        return null
-    }
 
 
 }

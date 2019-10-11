@@ -2,6 +2,7 @@ package languages.kotlin.features
 
 import base.LanguageSupport
 import core.BaseFeature
+import languages.java.JavaSupport
 import languages.kotlin.KotlinSupport
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLSpanElement
@@ -44,7 +45,14 @@ class ImportStatementFeature(languageSupport: LanguageSupport) : BaseKotlinFeatu
 
 
     private fun isClickedOnEndClass(htmlSpanElement: HTMLSpanElement): Boolean {
-        return htmlSpanElement.nextElementSibling == null
+        return if (languageSupport is JavaSupport) {
+            val isNextSemiColon = getNextNonSpaceSiblingElement(htmlSpanElement)?.textContent?.trim() == ";"
+            println("isNextSemiColon")
+            isNextSemiColon
+        } else {
+            // java support
+            getNextNonSpaceSiblingElement(htmlSpanElement) == null
+        }
     }
 
 
