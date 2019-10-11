@@ -9,7 +9,7 @@ import kotlin.browser.window
 /**
  * To navigate to menu resource from `R.menu.menu_file` call
  */
-class MenuResFeature(languageSupport: LanguageSupport) : BaseFeature(languageSupport) {
+class KotlinMenuResFeature(languageSupport: LanguageSupport) : BaseFeature(languageSupport) {
 
     override fun isMatch(inputText: String, htmlSpanElement: HTMLSpanElement): Boolean {
         return htmlSpanElement.previousElementSibling?.textContent.equals(".menu")

@@ -10,7 +10,7 @@ import utils.KotlinParser
 /**
  * To navigate to external method call definition (method calls to another classes using objects)
  */
-open class ExternalMethodCallFeature(languageSupport: LanguageSupport) : BaseKotlinFeature(languageSupport) {
+open class KotlinExternalMethodCallFeature(languageSupport: LanguageSupport) : BaseKotlinFeature(languageSupport) {
 
     companion object {
         private val VARIABLE_METHOD_CALL_PATTERN = "\\.\\s*\\w+\\s*".toRegex()

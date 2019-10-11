@@ -12,14 +12,14 @@ open class KotlinSupport : LanguageSupport() {
 
     override fun getFeatures(): List<BaseFeature> {
         return listOf(
-                LayoutResFeature(this),
-                StringResFeature(this),
-                MenuResFeature(this),
-                ImportStatementFeature(this),
-                InternalMethodCallFeature(this),
-                VariableFeature(this),
-                ExternalMethodCallFeature(this),
-                ClassFeature(this)
+                KotlinLayoutResFeature(this),
+                KotlinStringResFeature(this),
+                KotlinMenuResFeature(this),
+                KotlinImportStatementFeature(this),
+                KotlinInternalMethodCallFeature(this),
+                KotlinVariableFeature(this),
+                KotlinExternalMethodCallFeature(this),
+                KotlinClassFeature(this)
         )
     }
 

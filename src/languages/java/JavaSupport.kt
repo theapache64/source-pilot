@@ -1,9 +1,17 @@
 package languages.java
 
-import languages.kotlin.KotlinSupport
+import base.LanguageSupport
+import core.BaseFeature
+import languages.java.features.JavaClassFeature
 
 
-open class JavaSupport : KotlinSupport() {
+class JavaSupport : LanguageSupport() {
+
+    override fun getFeatures(): List<BaseFeature> {
+        return listOf(
+                JavaClassFeature(this)
+        )
+    }
 
     override fun getFileExtension(): String {
         return "java"
@@ -14,7 +22,7 @@ open class JavaSupport : KotlinSupport() {
             if (newUrl == null) {
                 val matchedText = getUpperSiblingsSplitted(htmlSpanElement)
                 if (matchedText != null) {
-                    super.getNewResourceUrl(matchedText, htmlSpanElement, callback)
+                    super.getNewResourceUrl(matchedText, htmlSpanElemen t, callback)
                 } else {
                     callback(null, false)
                 }

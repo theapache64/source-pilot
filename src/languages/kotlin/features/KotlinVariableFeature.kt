@@ -12,7 +12,7 @@ import kotlin.browser.document
 /**
  * To navigate to in-class variable type definition/ assignment line
  */
-class VariableFeature(languageSupport: LanguageSupport) : BaseKotlinFeature(languageSupport) {
+class KotlinVariableFeature(languageSupport: LanguageSupport) : BaseKotlinFeature(languageSupport) {
 
     override fun isMatch(inputText: String, htmlSpanElement: HTMLSpanElement): Boolean {
         return isVariable(htmlSpanElement)

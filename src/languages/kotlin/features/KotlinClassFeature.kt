@@ -6,7 +6,7 @@ import org.w3c.dom.HTMLSpanElement
 /**
  * To navigate to external classes from class names
  */
-open class ClassFeature(languageSupport: LanguageSupport) : BaseKotlinFeature(languageSupport) {
+open class KotlinClassFeature(languageSupport: LanguageSupport) : BaseKotlinFeature(languageSupport) {
 
     override fun isMatch(inputText: String, htmlSpanElement: HTMLSpanElement): Boolean {
         return !isPrimitiveDataType(inputText) && imports.isNotEmpty()

@@ -9,7 +9,7 @@ import utils.CommonParser
 import kotlin.browser.document
 import kotlin.browser.window
 
-class InternalMethodCallFeature(languageSupport: LanguageSupport) : BaseKotlinFeature(languageSupport) {
+class KotlinInternalMethodCallFeature(languageSupport: LanguageSupport) : BaseKotlinFeature(languageSupport) {
 
     override fun isMatch(inputText: String, htmlSpanElement: HTMLSpanElement): Boolean {
         return isInternalMethodCall(htmlSpanElement)
