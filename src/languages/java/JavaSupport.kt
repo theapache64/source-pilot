@@ -9,7 +9,9 @@ class JavaSupport : LanguageSupport() {
 
     override fun getFeatures(): List<BaseFeature> {
         return listOf(
-                JavaClassFeature(this)
+                JavaLayoutRes
+                JavaClassFeature(this),
+                JavaExternalMethodCallFeature(t)
         )
     }
 
