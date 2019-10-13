@@ -5,6 +5,6 @@ import languages.kotlin.features.KotlinInternalMethodCallFeature
 
 class JavaInternalMethodCallFeature(languageSupport: LanguageSupport) : KotlinInternalMethodCallFeature(languageSupport) {
     override fun getMethodRegEx(methodName: String): String {
-        return "\\w+\\s+\\w+\\s+$methodName\\(\\)"
+        return "(?:\\w+)?\\s+(?:\\w+)\\s+$methodName\\("
     }
 }
