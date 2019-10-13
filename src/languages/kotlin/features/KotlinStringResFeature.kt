@@ -10,23 +10,31 @@ import kotlin.browser.window
 /**
  * To navigate to strings.xml from `R.string.some_string` call
  */
-class KotlinStringResFeature(languageSupport: LanguageSupport) : BaseFeature(languageSupport) {
+open class KotlinStringResFeature(languageSupport: LanguageSupport) : BaseKotlinFeature(languageSupport) {
 
     override fun isMatch(inputText: String, htmlSpanElement: HTMLSpanElement): Boolean {
-        return htmlSpanElement.previousElementSibling?.textContent.equals(".string")
+        return isRes(htmlSpanElement, "string")
     }
 
     override fun handle(inputText: String, htmlSpanElement: HTMLSpanElement, callback: (url: String?, isNewTab: Boolean) -> Unit) {
         val stringResName = getStringName(inputText)
+        /*val currentUrl = window.location.toString()
+        val stringXml = "${currentUrl.split("main")[0]}main/res/values/strings.xml"*/
+        console.log("String name is '$stringResName'")
         val currentUrl = window.location.toString()
-        val stringXml = "${currentUrl.split("main")[0]}main/res/values/strings.xml"
-        callback(stringXml, true)
-        XMLLineFinder.getLineNumber(stringXml, stringResName) { lineNumber ->
-            callback("$stringXml#L$lineNumber", true)
+        val lastMainIndex = currentUrl.indexOf("/main/")
+        val newUrl = currentUrl.substring(0, lastMainIndex) + "/main/res/values/strings.xml"
+        callback(newUrl, true)
+        XMLLineFinder.getLineNumber(newUrl, stringResName) { lineNumber ->
+            if (lineNumber > 0) {
+                callback("$newUrl#L$lineNumber", true)
+            }else{
+                callback(null, false)
+            }
         }
     }
 
-    private fun getStringName(inputText: String): String {
+    open fun getStringName(inputText: String): String {
         return KotlinParser.getStringResName(inputText)
     }
 }
