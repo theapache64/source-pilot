@@ -20,6 +20,10 @@ A chrome extension to enable IDE like file navigation in GitHub
 
 ### Supported Features
 
+ ✔️ = Done
+ 
+ 🚧 = Under-construction/ Experimental
+ 
 - Android/Kotlin
 
 | Feature                                 | Kotlin | Java  |
@@ -33,6 +37,7 @@ A chrome extension to enable IDE like file navigation in GitHub
 | In-class variable navigation            | ✔️     | ✔️    |
 | In-class method navigation              | ✔️     | ✔️    |
 | External-class method navigation        | ✔️     | 🚧    |
+| Static/Object method navigation         | 🚧️     | 🚧    |
 
 - Android/XML
 

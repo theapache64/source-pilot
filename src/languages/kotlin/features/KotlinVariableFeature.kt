@@ -38,9 +38,10 @@ open class KotlinVariableFeature(languageSupport: LanguageSupport) : BaseKotlinF
         return -1
     }
 
-    private fun isVariable(htmlSpanElement: HTMLSpanElement): Boolean {
-        return htmlSpanElement.className != "pl-en" && htmlSpanElement.textContent?.matches("\\w+") ?: false
-                && getNextNonSpaceSiblingElement(htmlSpanElement)?.textContent?.startsWith(".") ?: false
+    open fun isVariable(htmlSpanElement: HTMLSpanElement): Boolean {
+        return htmlSpanElement.className != "pl-en" &&
+                htmlSpanElement.textContent?.matches("\\w+") ?: false &&
+                getNextNonSpaceSiblingElement(htmlSpanElement)?.textContent?.startsWith(".") ?: false
     }
 
 
