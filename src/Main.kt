@@ -131,6 +131,7 @@ fun checkIsClickable(inputText: String) {
             resLink = newUrl
             isNewTab = newTab
             activeElement?.style?.textDecoration = "underline"
+            activeElement?.style?.cursor = "pointer"
             doubleCheckUrl(newUrl)
         } else {
             resLink = null
@@ -149,6 +150,7 @@ fun doubleCheckUrl(newUrl: String) {
             // invalid
             resLink = null
             activeElement?.style?.textDecoration = "none"
+            activeElement?.style?.cursor = ""
         }
     }
     xhr.send()
@@ -156,6 +158,7 @@ fun doubleCheckUrl(newUrl: String) {
 
 fun removeUnderlineFromActiveElement() {
     activeElement?.style?.textDecoration = "none"
+    activeElement?.style?.cursor = ""
     activeElement = null
 }
 
