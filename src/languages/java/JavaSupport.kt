@@ -14,9 +14,9 @@ class JavaSupport : LanguageSupport() {
                 JavaStringResFeature(this),
                 JavaMenuResFeature(this),
                 JavaImportStatementFeature(this),
-                JavaInternalMethodCallFeature(this)
-//                JavaVariableFeature(this),
-//                JavaExternalMethodCallFeature(this),
+                JavaInternalMethodCallFeature(this),
+                JavaVariableFeature(this),
+                JavaExternalMethodCallFeature(this)
 //                JavaClassFeature(this)
         )
     }
