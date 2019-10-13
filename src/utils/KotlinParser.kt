@@ -1,7 +1,5 @@
 package utils
 
-import org.w3c.dom.HTMLSpanElement
-
 
 object KotlinParser {
 
@@ -32,7 +30,6 @@ object KotlinParser {
     fun parseInternalMethodName(inputText: String): String {
         return INTERNAL_METHOD_CALL_PATTERN.find(inputText)!!.groups[1]!!.value
     }
-
 
 
     fun parseImportPackage(importStatement: String): String? {

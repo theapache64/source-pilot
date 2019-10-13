@@ -18,6 +18,20 @@ A chrome extension to enable IDE like file navigation in GitHub
 - [ ] Python
 - [ ] PHP
 
+### Supported Features
+| Feature  | Kotlin | Java |
+| ------------- | ------------- | ------------- |
+| Class name navigation  | ✅  | ✅  |
+| `R.layout` navigation  | ✅  | ✅  |
+| `R.string` navigation  | ✅  | ✅  |
+| `R.menu` navigation  | ✅  | ✅  |
+| `import` statement class navigation  | ✅  | ✅  |
+| `import` statement directory navigation  | ✅  | ✅  |
+| in-class variable navigation  | ✅  | ✅  |
+| in-class method navigation | ✅  | ✅  |
+| external-class method navigation | ✅  | 🧪  |
+
+
 ## Supported Features
 
 - [x] Android/Kotlin and Android/Java

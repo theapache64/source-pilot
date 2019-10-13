@@ -44,15 +44,8 @@ open class KotlinImportStatementFeature(languageSupport: LanguageSupport) : Base
     }
 
 
-    private fun isClickedOnEndClass(htmlSpanElement: HTMLSpanElement): Boolean {
-        return if (languageSupport is JavaSupport) {
-            val isNextSemiColon = getNextNonSpaceSiblingElement(htmlSpanElement)?.textContent?.trim() == ";"
-            println("isNextSemiColon")
-            isNextSemiColon
-        } else {
-            // java support
-            getNextNonSpaceSiblingElement(htmlSpanElement) == null
-        }
+    open fun isClickedOnEndClass(htmlSpanElement: HTMLSpanElement): Boolean {
+        return getNextNonSpaceSiblingElement(htmlSpanElement) == null
     }
 
 
