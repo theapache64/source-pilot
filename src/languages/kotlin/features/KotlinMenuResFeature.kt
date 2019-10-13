@@ -9,10 +9,10 @@ import kotlin.browser.window
 /**
  * To navigate to menu resource from `R.menu.menu_file` call
  */
-class KotlinMenuResFeature(languageSupport: LanguageSupport) : BaseFeature(languageSupport) {
+open class KotlinMenuResFeature(languageSupport: LanguageSupport) : BaseKotlinFeature(languageSupport) {
 
     override fun isMatch(inputText: String, htmlSpanElement: HTMLSpanElement): Boolean {
-        return htmlSpanElement.previousElementSibling?.textContent.equals(".menu")
+        return isRes(htmlSpanElement, "menu")
     }
 
     override fun handle(inputText: String, htmlSpanElement: HTMLSpanElement, callback: (url: String?, isNewTab: Boolean) -> Unit) {
@@ -22,7 +22,7 @@ class KotlinMenuResFeature(languageSupport: LanguageSupport) : BaseFeature(langu
         callback(newUrl, true)
     }
 
-    private fun getMenuFileName(inputText: String): String? {
+    open fun getMenuFileName(inputText: String): String? {
         return CommonParser.parseMenuFileName(inputText)
     }
 
