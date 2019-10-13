@@ -13,7 +13,7 @@ import kotlin.browser.window
 /**
  * To navigate to classes/directories from import statement
  */
-class KotlinImportStatementFeature(languageSupport: LanguageSupport) : BaseKotlinFeature(languageSupport) {
+open class KotlinImportStatementFeature(languageSupport: LanguageSupport) : BaseKotlinFeature(languageSupport) {
 
     override fun isMatch(inputText: String, htmlSpanElement: HTMLSpanElement): Boolean {
         val fullLine = htmlSpanElement.parentElement?.textContent ?: ""

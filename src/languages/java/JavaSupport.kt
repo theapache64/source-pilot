@@ -2,10 +2,7 @@ package languages.java
 
 import base.LanguageSupport
 import core.BaseFeature
-import languages.java.features.JavaClassFeature
-import languages.java.features.JavaLayoutResFeature
-import languages.java.features.JavaMenuResFeature
-import languages.java.features.JavaStringResFeature
+import languages.java.features.*
 import languages.kotlin.features.*
 
 
@@ -15,8 +12,8 @@ class JavaSupport : LanguageSupport() {
         return listOf(
                 JavaLayoutResFeature(this),
                 JavaStringResFeature(this),
-                JavaMenuResFeature(this)
-//                JavaImportStatementFeature(this),
+                JavaMenuResFeature(this),
+                JavaImportStatementFeature(this)
 //                JavaInternalMethodCallFeature(this),
 //                JavaVariableFeature(this),
 //                JavaExternalMethodCallFeature(this),
