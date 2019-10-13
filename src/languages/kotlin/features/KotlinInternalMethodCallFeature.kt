@@ -9,7 +9,7 @@ import utils.CommonParser
 import kotlin.browser.document
 import kotlin.browser.window
 
-class KotlinInternalMethodCallFeature(languageSupport: LanguageSupport) : BaseKotlinFeature(languageSupport) {
+open class KotlinInternalMethodCallFeature(languageSupport: LanguageSupport) : BaseKotlinFeature(languageSupport) {
 
     override fun isMatch(inputText: String, htmlSpanElement: HTMLSpanElement): Boolean {
         return isInternalMethodCall(htmlSpanElement)
@@ -60,7 +60,7 @@ class KotlinInternalMethodCallFeature(languageSupport: LanguageSupport) : BaseKo
                 && htmlSpanElement.previousElementSibling?.textContent?.isBlank() ?: true
     }
 
-    private fun getMethodRegEx(methodName: String): String {
+    open fun getMethodRegEx(methodName: String): String {
         return "fun\\s*$methodName\\s*\\("
     }
 
