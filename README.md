@@ -24,7 +24,7 @@ A chrome extension to enable IDE like file navigation in GitHub
 
 | Feature                                 | Kotlin | Java  |
 |:----------------------------------------|:-------|:------|
-| Class name navigation                   | ✔      | ✔️    |
+| Class name navigation                   | ✔️      | ✔️    |
 | `R.layout` navigation                   | ✔️     | ✔️    |
 | `R.string` navigation                   | ✔️     | ✔️    |
 | `R.menu` navigation                     | ✔️     | ✔️    |
