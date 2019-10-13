@@ -19,42 +19,32 @@ A chrome extension to enable IDE like file navigation in GitHub
 - [ ] PHP
 
 ### Supported Features
-| Feature  | Kotlin | Java |
-| ------------- | ------------- | ------------- |
-| Class name navigation  | ✔️  | ✔️  |
-| `R.layout` navigation  | ✔️  | ✔️  |
-| `R.string` navigation  | ✔️  | ✔️  |
-| `R.menu` navigation  | ✔️  | ✔️  |
-| `import` statement class navigation  | ✔️  | ✔️  |
-| `import` statement directory navigation  | ✔️  | ✔️  |
-| in-class variable navigation  | ✔️  | ✔️  |
-| in-class method navigation | ✔️  | ✔️  |
-| external-class method navigation | ✔️  | ⚗️  |
 
+- Android/Kotlin
 
-## Supported Features
+| Feature                                 | Kotlin | Java  |
+|:----------------------------------------|:-------|:------|
+| Class name navigation                   | ✔      | ✔️    |
+| `R.layout` navigation                   | ✔️     | ✔️    |
+| `R.string` navigation                   | ✔️     | ✔️    |
+| `R.menu` navigation                     | ✔️     | ✔️    |
+| `import` statement class navigation     | ✔️     | ✔️    |
+| `import` statement directory navigation | ✔️     | ✔️    |
+| In-class variable navigation            | ✔️     | ✔️    |
+| In-class method navigation              | ✔️     | ✔️    |
+| External-class method navigation        | ✔️     | 🚧    |
 
-- [x] Android/Kotlin and Android/Java
-    - [x] Class name navigation
-    - [x] `R.layout` navigation 
-    - [x] `R.string` navigation
-    - [x] `R.menu` navigation
-    - [x] `import` statement navigation
-    - [x] Directory navigation from import statement
-    - [ ] in-class variable navigation
-    - [ ] external-class variable navigation
-    - [ ] in-class method navigation
-    - [ ] external-class method navigation
-    
-- [x] Android/XML
+- Android/XML
 
-    - [x] `@style` navigation
-    - [x] `@string` navigation
-    - [x] `@color` navigation
-    - [x] `@dimen` navigation
-    - [x] `@drawable` navigation
-    - [x] `@layout` navigation
-
+| Feature                | Status |
+|:-----------------------|:-------|
+| Class name navigation  | ✔️     |
+| `@style` navigation    | ✔️     |
+| `@string` navigation   | ✔️     |
+| `@color` navigation    | ✔️     |
+| `@dimen` navigation    | ✔️     |
+| `@drawable` navigation | ✔️     |
+| `@layout` navigation   | ✔️     |
 
 ## Contribution
 
