@@ -164,6 +164,18 @@ abstract class BaseKotlinFeature(languageSupport: LanguageSupport) : BaseFeature
         return null
     }
 
+    protected fun isRes(htmlSpanElement: HTMLSpanElement, res: String): Boolean {
+        val clickedText = htmlSpanElement.textContent
+        val fullLine = htmlSpanElement.parentElement?.textContent
+        val semiSplit = fullLine?.split(";")?.get(0)
+        if (semiSplit != null) {
+            val isMatch = semiSplit.matches("R\\.$res\\.${clickedText?.replace("\\W+".toRegex(), "")}")
+            println("is $clickedText is $res -> $isMatch")
+            return isMatch
+        }
+        return true
+    }
+
 
 
 }

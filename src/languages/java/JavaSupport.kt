@@ -3,15 +3,22 @@ package languages.java
 import base.LanguageSupport
 import core.BaseFeature
 import languages.java.features.JavaClassFeature
+import languages.java.features.JavaLayoutResFeature
+import languages.kotlin.features.*
 
 
 class JavaSupport : LanguageSupport() {
 
     override fun getFeatures(): List<BaseFeature> {
         return listOf(
-                JavaLayoutRes
-                JavaClassFeature(this),
-                JavaExternalMethodCallFeature(t)
+                JavaLayoutResFeature(this),
+//                KotlinStringResFeature(this),
+//                KotlinMenuResFeature(this),
+//                KotlinImportStatementFeature(this),
+//                KotlinInternalMethodCallFeature(this),
+//                KotlinVariableFeature(this),
+//                KotlinExternalMethodCallFeature(this),
+                JavaClassFeature(this)
         )
     }
 
