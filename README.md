@@ -4,6 +4,10 @@
 
 A chrome extension to enable IDE like file navigation in GitHub
 
+## Demo
+
+![](demo.gif)
+
 ## Project Status
 
 🚧 This project is under active development. The release may contain bugs or unexpected behavior. 
