@@ -17,14 +17,14 @@ class SupportManager {
      */
     fun getSupportForCurrentFile(): LanguageSupport? {
 
-        val arrayOfLanguageSupports = arrayOf(
+        val supportedLanguages = arrayOf(
                 KotlinSupport(),
                 JavaSupport(),
                 AndroidXMLSupport()
         )
 
         val currentFileExt = CommonParser.parseFileExt(window.location.toString())
-        for (support in arrayOfLanguageSupports) {
+        for (support in supportedLanguages) {
             if (support.getFileExtension() == currentFileExt) {
                 return support
             }

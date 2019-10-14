@@ -68,7 +68,8 @@ Feel free to open issues and create PRs
 
 ## Contribution
 
-This project is entirely built on top of pure Kotlin JS. Feel free to create PRs
+This project is entirely built on top of pure Kotlin JS. Feel free to create PRs. Detailed documentation on how to contribute
+to this project can be found [here](CONTRIBUTE.md)
 
 ## Credits
 
