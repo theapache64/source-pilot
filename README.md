@@ -25,9 +25,6 @@ Feel free to open issues and create PRs
 
 ### Supported Features
 
- ✔️ = Done
- 
- 🚧 = Under-construction/ Experimental
  
 - Android/Kotlin
 
