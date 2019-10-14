@@ -18,8 +18,8 @@ Feel free to open issues and create PRs
 ### Chrome
 
 - Step 1 : Download `CRX` file from [releases](https://github.com/theapache64/source-pilot/releases/latest)
-- Step 2 : Open [extensions tab](chrome://extensions)
-- Step 3 : Drag-and-drop `CRX` file to [extensions tab](chrome://extensions)
+- Step 2 : Open [extensions tab] (`chrome://extensions`)
+- Step 3 : Drag-and-drop `CRX` file to extensions tab
 
 ### Firefox
 
@@ -68,12 +68,17 @@ Feel free to open issues and create PRs
 
 ## Contribution
 
-This project is entirely built on top of pure Kotlin JS. Feel free to create PRs. Detailed documentation on how to contribute
+This project is entirely built on top of pure `Kotlin JS`. Feel free to create PRs. Detailed documentation on how to contribute
 to this project can be found [here](CONTRIBUTE.md)
 
 ## Credits
 
 - Logo : [GoodWare](https://www.flaticon.com/authors/good-ware)
+
+## Links
+
+- Reddit : [https://www.reddit.com/r/androiddev/comments/dcq4lz/ive_created_a_chrome_extension_to_add_ide_like/](https://www.reddit.com/r/androiddev/comments/dcq4lz/ive_created_a_chrome_extension_to_add_ide_like/)
+
 
 ## Author
 theapache64 
