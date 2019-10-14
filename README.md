@@ -13,11 +13,25 @@ A chrome extension to enable IDE like file navigation in GitHub
 🚧 This project is under active development. The release may contain bugs or unexpected behavior. 
 Feel free to open issues and create PRs
 
+## Install
+
+### Chrome
+
+- Step 1 : Download `CRX` file from [releases](https://github.com/theapache64/source-pilot/releases/latest)
+- Step 2 : Open [extensions tab](chrome://extensions)
+- Step 3 : Drag-and-drop `CRX` file to [extensions tab](chrome://extensions)
+
+### Firefox
+
+- Coming Soon
+
 ## Supported Languages
 
 - [x] Android/Kotlin
 - [x] Android/Java
 - [x] Android/XML
+- [ ] Java (JVM Projects)
+- [ ] Kotlin (JVM Projects)
 - [ ] JavaScript
 - [ ] Swift
 - [ ] Python
@@ -25,7 +39,6 @@ Feel free to open issues and create PRs
 
 ### Supported Features
 
- 
 - Android/Kotlin
 
 | Feature                                 | Kotlin | Java  |
