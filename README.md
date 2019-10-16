@@ -17,9 +17,9 @@ Feel free to open issues and create PRs
 
 ### Chrome
 
-- Step 1 : Download `CRX` file from [releases](https://github.com/theapache64/source-pilot/releases/latest)
-- Step 2 : Open [extensions tab] (`chrome://extensions`)
-- Step 3 : Drag-and-drop `CRX` file to extensions tab
+- Step 1 : Download `zip` file from [releases](https://github.com/theapache64/source-pilot/releases/latest) and extract it. 
+- Step 2 : Open extensions tab (`chrome://extensions`) and turn on `Developer Mode`
+- Step 4 : Click `Load unpacked` and select the extracted folder :star:
 
 ### Firefox
 

@@ -1,6 +1,6 @@
 {
   "name": "Source Pilot",
-  "version": "0.0.1",
+  "version": "0.0.101",
   "description": "IDE like file navigation, for GitHub",
   "manifest_version": 2,
   "icons": {
