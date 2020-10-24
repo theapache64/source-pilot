@@ -8,7 +8,7 @@ import org.w3c.dom.Element
 import org.w3c.dom.HTMLSpanElement
 import utils.CommonParser
 import utils.KotlinParser
-import kotlin.browser.window
+import kotlinx.browser.window
 
 /**
  * To navigate to classes/directories from import statement

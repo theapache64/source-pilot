@@ -5,8 +5,8 @@ import org.w3c.xhr.XMLHttpRequest
 import utils.CodeModifier
 import utils.GitHubUtils
 import utils.SupportManager
-import kotlin.browser.document
-import kotlin.browser.window
+import kotlinx.browser.document
+import kotlinx.browser.window
 
 var isControlActive = false;
 var activeElement: HTMLSpanElement? = null
@@ -141,16 +141,26 @@ fun checkIsClickable(inputText: String) {
     }
 }
 
+private val UNIT_TEST_URL_REGEX = "https:\\/\\/github\\.com\\/.+?\\/.+?\\/blob\\/.+?\\/.+?\\/src\\/(test|androidTest|sharedTest)\\/(?:java|kotlin)\\/.+".toRegex()
 
 fun doubleCheckUrl(newUrl: String) {
     val xhr = XMLHttpRequest()
     xhr.open("GET", newUrl)
     xhr.onload = {
-        if (xhr.status.toInt() != 200) {
-            // invalid
-            resLink = null
-            activeElement?.style?.textDecoration = "none"
-            activeElement?.style?.cursor = ""
+        println("Status code is ${xhr.status}")
+        val statusCode = xhr.status.toInt()
+        if (statusCode == 404 && newUrl.matches(UNIT_TEST_URL_REGEX)) {
+            // Tried to load a class from test directory.
+            val updatedUrl = newUrl.replace("(test|androidTest|sharedTest)".toRegex(), "main")
+            println("Updated URL : $updatedUrl")
+            resLink = updatedUrl
+        } else {
+            if (statusCode != 200) {
+                // invalid
+                resLink = null
+                activeElement?.style?.textDecoration = "none"
+                activeElement?.style?.cursor = ""
+            }
         }
     }
     xhr.send()

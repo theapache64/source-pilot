@@ -1,10 +1,10 @@
 package utils
 
 import org.w3c.dom.*
-import kotlin.browser.document
-import kotlin.dom.addClass
-import kotlin.dom.appendElement
-import kotlin.dom.isElement
+import kotlinx.browser.document
+import kotlinx.dom.addClass
+import kotlinx.dom.appendElement
+import kotlinx.dom.isElement
 
 object CodeModifier {
 

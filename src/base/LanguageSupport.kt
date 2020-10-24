@@ -2,7 +2,7 @@ package base
 
 import core.BaseFeature
 import org.w3c.dom.HTMLSpanElement
-import kotlin.browser.document
+import kotlinx.browser.document
 
 abstract class LanguageSupport {
 

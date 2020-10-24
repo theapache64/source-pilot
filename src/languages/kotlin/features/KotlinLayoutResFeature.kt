@@ -4,7 +4,7 @@ import base.LanguageSupport
 import core.BaseFeature
 import org.w3c.dom.HTMLSpanElement
 import utils.CommonParser
-import kotlin.browser.window
+import kotlinx.browser.window
 
 /**
  * To navigate to layout from `R.layout.layout_file` call

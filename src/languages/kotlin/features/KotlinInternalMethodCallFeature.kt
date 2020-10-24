@@ -6,8 +6,8 @@ import org.w3c.dom.Element
 import org.w3c.dom.HTMLSpanElement
 import org.w3c.dom.get
 import utils.CommonParser
-import kotlin.browser.document
-import kotlin.browser.window
+import kotlinx.browser.document
+import kotlinx.browser.window
 
 open class KotlinInternalMethodCallFeature(languageSupport: LanguageSupport) : BaseKotlinFeature(languageSupport) {
 

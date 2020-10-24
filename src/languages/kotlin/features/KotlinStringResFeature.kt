@@ -5,7 +5,7 @@ import core.BaseFeature
 import org.w3c.dom.HTMLSpanElement
 import utils.KotlinParser
 import utils.XMLLineFinder
-import kotlin.browser.window
+import kotlinx.browser.window
 
 /**
  * To navigate to strings.xml from `R.string.some_string` call

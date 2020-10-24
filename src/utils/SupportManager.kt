@@ -4,7 +4,7 @@ import base.LanguageSupport
 import languages.xml.AndroidXMLSupport
 import languages.java.JavaSupport
 import languages.kotlin.KotlinSupport
-import kotlin.browser.window
+import kotlinx.browser.window
 
 /**
  * This class is responsible to handle language support

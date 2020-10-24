@@ -7,7 +7,7 @@ import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLSpanElement
 import org.w3c.dom.get
 import utils.KotlinParser
-import kotlin.browser.document
+import kotlinx.browser.document
 
 /**
  * To navigate to in-class variable type definition/ assignment line

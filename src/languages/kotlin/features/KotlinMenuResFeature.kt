@@ -4,7 +4,7 @@ import base.LanguageSupport
 import core.BaseFeature
 import org.w3c.dom.HTMLSpanElement
 import utils.CommonParser
-import kotlin.browser.window
+import kotlinx.browser.window
 
 /**
  * To navigate to menu resource from `R.menu.menu_file` call

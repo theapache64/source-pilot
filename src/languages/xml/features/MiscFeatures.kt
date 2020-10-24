@@ -5,7 +5,7 @@ import core.BaseFeature
 import org.w3c.dom.HTMLSpanElement
 import utils.CommonParser
 import utils.XMLLineFinder
-import kotlin.browser.window
+import kotlinx.browser.window
 
 class MiscFeatures(languageSupport: LanguageSupport) : BaseFeature(languageSupport) {
 

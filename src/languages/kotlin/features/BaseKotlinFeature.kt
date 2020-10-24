@@ -10,8 +10,8 @@ import org.w3c.dom.HTMLSpanElement
 import org.w3c.dom.get
 import utils.CommonParser
 import utils.KotlinParser
-import kotlin.browser.document
-import kotlin.browser.window
+import kotlinx.browser.document
+import kotlinx.browser.window
 
 abstract class BaseKotlinFeature(languageSupport: LanguageSupport) : BaseFeature(languageSupport) {
 
@@ -77,6 +77,7 @@ abstract class BaseKotlinFeature(languageSupport: LanguageSupport) : BaseFeature
 
         // Getting possible import statements for the class
         val matchingImport = getMatchingImport(inputText, currentPackageName, htmlSpanElement)
+        println("Matching import is '$matchingImport'")
 
         when {
 
@@ -175,7 +176,6 @@ abstract class BaseKotlinFeature(languageSupport: LanguageSupport) : BaseFeature
         }
         return true
     }
-
 
 
 }
