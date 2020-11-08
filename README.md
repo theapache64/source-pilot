@@ -80,5 +80,5 @@ to this project can be found [here](CONTRIBUTE.md)
 - Reddit : [https://www.reddit.com/r/androiddev/comments/dcq4lz/ive_created_a_chrome_extension_to_add_ide_like/](https://www.reddit.com/r/androiddev/comments/dcq4lz/ive_created_a_chrome_extension_to_add_ide_like/)
 
 
-## Author
+## Author ✍️
 theapache64 
